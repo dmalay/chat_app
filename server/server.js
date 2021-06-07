@@ -1,9 +1,14 @@
 import express from 'express'
 import cors from 'cors'
 import path from 'path'
+import http from 'http'
 
-const server = express()
+import mongooseService from './services/mongoose'
+
+const app = express()
 const port = process.env.PORT || 5000
+
+mongooseService.connect()
 
 const middleware = [
   cors(),
@@ -11,14 +16,16 @@ const middleware = [
   express.json({ limit: '50mb', extended: true })
 ]
 
-middleware.forEach((it) => server.use(it))
+middleware.forEach((it) => app.use(it))
 
 if (process.env.NODE_ENV === 'production') {
-  server.use(express.static(path.join(__dirname, 'client/build')))
-  server.get('*', function(req, res) {
+  app.use(express.static(path.join(__dirname, 'client/build')))
+  app.get('*', function(req, res) {
     res.sendFile(join(__dirname, 'client/build', 'index.html'))
   })
 }
+
+const server = http.createServer(app)
 
 server.listen(port, (error) => {
   if (error) throw error
