@@ -1,0 +1,5 @@
+export const UPDATE_LOGIN = 'UPDATE_LOGIN'
+export const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
+export const SIGN_IN = 'SIGN_IN'
+export const REGISTER = 'REGISTER'
+export const SET_ERROR='SET_ERROR'

@@ -1,7 +1,7 @@
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import { updateLoginField, updatePasswordField } from "../redux/reducers/auth"
+import { updateLoginField, updatePasswordField, register } from "../redux/actions/auth.actions"
 
 const SignUp = () => {
   const dispatch = useDispatch()
@@ -58,7 +58,7 @@ const SignUp = () => {
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold w-full py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
-              // onClick={() => dispatch())}
+              onClick={() => dispatch(register())}
             >
               Sign Up
             </button>
