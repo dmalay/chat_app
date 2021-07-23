@@ -2,8 +2,11 @@ import express from 'express'
 import cors from 'cors'
 import path from 'path'
 import http from 'http'
+import passport from 'passport'
 
+import router from './router'
 import mongooseService from './services/mongoose'
+import jwtStrategy from './services/passport'
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -12,9 +15,13 @@ mongooseService.connect()
 
 const middleware = [
   cors(),
+  passport.initialize(),
   express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }),
-  express.json({ limit: '50mb', extended: true })
+  express.json({ limit: '50mb', extended: true }),
+  router
 ]
+
+passport.use('jwt', jwtStrategy)
 
 middleware.forEach((it) => app.use(it))
 

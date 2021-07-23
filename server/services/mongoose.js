@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import config from '../config'
+import options from '../config'
 
 mongoose.connection.on('connected', () => {
   console.log('db is connected')
@@ -10,10 +10,11 @@ mongoose.connection.on('error', (err) => {
   process.exit(1)
 })
 
-exports.connect = async (mongoURL = config.mongoURL) => {
+exports.connect = async (mongoURL = options.mongoURL) => {
   mongoose.connect(mongoURL, {
     useUnifiedTopology: true,
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useCreateIndex: true
   })
   return mongoose.connection
 }

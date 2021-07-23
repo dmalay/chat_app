@@ -18,11 +18,12 @@ export function signIn() {
   return (dispatch, getState) => {
     const store = getState()
     const { login, password } = store.auth
-    fetch("/api/v1/auth", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ login, password }),
-    })
+    console.log(JSON.stringify({login, password}))
+    fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ login, password })
+      })
       .then((r) => r.json())
       .then((data) => {
         dispatch({ type: SIGN_IN, token: data.token, user: data.user })
@@ -40,10 +41,10 @@ export function register() {
   return (dispatch, getState) => {
     const store = getState()
     const { login, password } = store.auth
-    fetch("/api/v1/register", {
+    fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ login, password }),
+      body: JSON.stringify({ login, password })
     })
       .then((r) => r.json())
       .then((data) => {
@@ -52,7 +53,7 @@ export function register() {
       .catch(() => {
         dispatch({
           type: SET_ERROR,
-          error: "Registration failed, incorrect login or password",
+          error: "Registration failed, incorrect login or password"
         })
       })
   }
