@@ -1,10 +1,10 @@
 
-import { UPDATE_LOGIN, UPDATE_PASSWORD, SIGN_IN, SET_ERROR } from '../types/auth.types'
+import { UPDATE_LOGIN, UPDATE_PASSWORD, SIGN_IN, SET_ERROR, REGISTER } from '../types/auth.types'
 
 const initialState = {
   login: "",
   password: "",
-  error:""
+  error: ""
 }
 
 export default (state = initialState, action) => {
@@ -28,9 +28,18 @@ export default (state = initialState, action) => {
         return {
             ...state,
             user,
-            token
-        }
-        
+            token,
+            password: ''
+        } 
+    }
+    case REGISTER: {
+      const {user, token } = action
+      return {
+        ...state,
+        user,
+        token,
+        password:''
+      }
     }
     case SET_ERROR:  {
         const { error } = action
