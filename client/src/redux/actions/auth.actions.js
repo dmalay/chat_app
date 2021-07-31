@@ -1,4 +1,5 @@
 import authService from '../../services/authService'
+import { history } from '../store'
 
 import {
   UPDATE_LOGIN,
@@ -24,6 +25,7 @@ export function signIn() {
     authService.login({ login, password })
     .then((data) => {
       dispatch({ type: SIGN_IN, token: data.token, user: data.user })
+      history.push('/')
     })
     .catch(() => {
       dispatch({
@@ -42,6 +44,7 @@ export function register() {
     authService.register({ login, password })
     .then((data) => {
       dispatch({ type: REGISTER, token: data.token, user: data.user })
+      history.push('/')
     })
     .catch(() => {
       dispatch({

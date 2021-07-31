@@ -4,7 +4,8 @@ import { UPDATE_LOGIN, UPDATE_PASSWORD, SIGN_IN, SET_ERROR, REGISTER } from '../
 const initialState = {
   login: "",
   password: "",
-  error: ""
+  error: "",
+  isLoggedIn: false
 }
 
 export default (state = initialState, action) => {
@@ -29,7 +30,8 @@ export default (state = initialState, action) => {
             ...state,
             user,
             token,
-            password: ''
+            password: '',
+            isLoggedIn: true
         } 
     }
     case REGISTER: {
@@ -38,7 +40,8 @@ export default (state = initialState, action) => {
         ...state,
         user,
         token,
-        password:''
+        password:'',
+        isLoggedIn: true
       }
     }
     case SET_ERROR:  {
