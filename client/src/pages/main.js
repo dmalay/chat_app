@@ -1,15 +1,16 @@
 import React from "react"
 
-import Sidebar from '../components/sidebar/sidebar'
-import ChatContent from '../components/chat-content/chat-content'
+import Sidebar from "../components/sidebar/sidebar"
+import ChatContent from "../components/chat-content/chat-content"
 
 const Main = () => {
   return (
-  <div>
-    <Head title="Chat" />
-    <Sidebar />
-    <ChatContent />
-  </div>
+    <div className="w-full h-screen border shadow bg-white">
+      <div className="flex">
+        <Sidebar />
+        <ChatContent />
+      </div>
+    </div>
   )
 }
 

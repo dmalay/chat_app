@@ -6,7 +6,6 @@ const Channels = () => {
   return (
     <div>
       <ChannelList />
-      this is Channels
     </div>
   )
 }

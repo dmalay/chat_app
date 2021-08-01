@@ -6,7 +6,6 @@ const DirectMessages = () => {
   return (
     <div>
       <UsersList />
-      this is DirectMessages
     </div>
   )
 }

@@ -6,11 +6,10 @@ import InputMessage from './input-message'
 
 const ChatContent = () => {
   return (
-    <div>
+    <div className="w-full h-screen flex flex-col">
       <Topbar />
       <ChatMessages />
       <InputMessage />
-      this is ChatContent
     </div>
   )
 }

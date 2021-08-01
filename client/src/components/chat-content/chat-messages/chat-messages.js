@@ -4,9 +4,8 @@ import MessageForm from './message-form'
 
 const ChatMessages = () => {
   return (
-    <div>
+    <div className="px-6 py-4 flex-1 overflow-scroll-x">
       <MessageForm />
-      this is ChatMessages
     </div>
   )
 }
