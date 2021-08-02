@@ -24,6 +24,7 @@ export const tokenController = async (req, res) => {
     const bearerToken = req.headers.authorization.replace("Bearer ", "")
     const jwtUser = jwt.verify(bearerToken, options.jwtSecret)
     const user = await User.findById(jwtUser._id)
+    user.password=''
     const token = generateToken(user)
     console.log(`user ${user.login} logged in with current token`)
     return res
@@ -61,6 +62,6 @@ export const registerController = async (req, res) => {
 
 const generateToken = (user) => {
   const payload = { _id: user._id }
-  const token = jwt.sign(payload, options.jwtSecret, { expiresIn: "48h" })
+  const token = jwt.sign(payload, options.jwtSecret, { expiresIn: "10s" })
   return token
 }
