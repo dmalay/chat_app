@@ -4,6 +4,6 @@ export default axios.create({
     baseURL: '/api',
     headers: {
         'Accept': 'application/json',
-        'Authorization': `Bearer ${'token'}`
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
     }
 })

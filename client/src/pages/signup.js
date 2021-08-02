@@ -1,7 +1,11 @@
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import { updateLoginField, updatePasswordField, register } from "../redux/actions/auth.actions"
+import {
+  updateLoginField,
+  updatePasswordField,
+  register,
+} from "../redux/actions/auth.actions"
 
 const SignUp = () => {
   const dispatch = useDispatch()
@@ -13,8 +17,9 @@ const SignUp = () => {
         <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <div className="mb-4">
             <div>
-            <h1 className='mx-4 mt-4 mb-10 text-center text-xl font-bold'>Create your account</h1>
-
+              <h1 className="mx-4 mt-4 mb-10 text-center text-xl font-bold">
+                Create your account
+              </h1>
             </div>
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -62,12 +67,9 @@ const SignUp = () => {
             >
               Sign Up
             </button>
-
           </div>
           <div className="text-blue-500 hover:underline hover:text-blue-800">
-            <Link to="/signin" >
-                Already have an account? Sign In
-            </Link>
+            <Link to="/signin">Already have an account? Sign In</Link>
           </div>
         </form>
       </div>
