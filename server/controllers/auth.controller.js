@@ -62,6 +62,6 @@ export const registerController = async (req, res) => {
 
 const generateToken = (user) => {
   const payload = { _id: user._id }
-  const token = jwt.sign(payload, options.jwtSecret, { expiresIn: "10s" })
+  const token = jwt.sign(payload, options.jwtSecret, { expiresIn: "48h" })
   return token
 }

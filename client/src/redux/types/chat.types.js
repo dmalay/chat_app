@@ -1,0 +1,2 @@
+export const ADD_MESSAGE = 'ADD_MESSAGE'
+export const SUBMIT_MESSAGE = 'SUBMIT_MESSAGE'
