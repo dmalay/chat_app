@@ -1,11 +1,11 @@
-import mongoose from "mongoose"
+import mongoose, { Schema } from "mongoose"
 
 const chatSchema = new mongoose.Schema(
     {
-        chatTitle: {
+        title: {
             type: String, require: true, max:80, min:3
         },
-        chatName: {
+        name: {
             type: String, require: true, max:20, min:3
         },
         creator: { type: Schema.Types.ObjectID, ref: 'user' },

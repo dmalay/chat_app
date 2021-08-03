@@ -10,6 +10,7 @@ import {
 const initialState = {
   login: "",
   password: "",
+  currentChat: {},
   error: "",
   isLoggedIn: false,
 }
@@ -31,11 +32,12 @@ export default (state = initialState, action) => {
       }
     }
     case SIGN_IN: {
-      const { user, token } = action
+      const { user, token, currentChat } = action
       return {
         ...state,
         user,
         token,
+        currentChat,
         password: "",
         isLoggedIn: true,
       }
@@ -62,7 +64,7 @@ export default (state = initialState, action) => {
         ...state,
         user: {},
         token: "",
-        isLogged: false,
+        isLoggedIn: false,
       }
     }
     default:

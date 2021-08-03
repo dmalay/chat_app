@@ -26,7 +26,7 @@ export function signIn() {
     authService
       .login({ login, password })
       .then((data) => {
-        dispatch({ type: SIGN_IN, token: data.token, user: data.user })
+        dispatch({ type: SIGN_IN, token: data.token, user: data.user, currentChat: data.currentChat })
         history.push("/")
       })
       .catch(() => {
@@ -42,7 +42,7 @@ export function loginWithToken() {
   return (dispatch) => {
     authService.loginWithToken()
     .then((data) => {
-      dispatch({ type: SIGN_IN, token: data.token, user: data.user })
+      dispatch({ type: SIGN_IN, token: data.token, user: data.user, currentChat: data.currentChat })
       history.push("/")
     })
     .catch(() => {

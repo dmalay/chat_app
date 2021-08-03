@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose, { Schema } from "mongoose"
 import bcrypt from "bcryptjs"
 
 const userSchema = new mongoose.Schema(
@@ -12,7 +12,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // currentChat: { type: Schema.Types.ObjectId, ref: "chat" },
+    currentChat: {
+      type: Schema.Types.ObjectId,
+      ref: "chat"
+    },
   },
   {
     timestamps: true,

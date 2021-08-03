@@ -6,10 +6,10 @@ import { logout } from '../../redux/actions/auth.actions'
 const LogoutBtn = () => {
     const dispatch = useDispatch()
   return (
-    <div className="py-2 px-4 m-6 absolute bottom-0 text-white bg-purple-900">
+    <div className="flex flex-auto py-2 px-6 my-6 absolute bottom-0 text-white bg-purple-900">
       <div className="flex transition duration-500 ease-in-out transform hover:scale-110 cursor-pointer"
       onClick={() => dispatch(logout())}>
-        <span className="mr-2 font-semibold">Logout</span>
+        <span className="mr-3 font-semibold">Logout</span>
         <svg
           className="h-7 w-7 fill-current"
           x="0px"
