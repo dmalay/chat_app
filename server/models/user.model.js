@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    currentChat: {
+    defaultChatID: {
       type: Schema.Types.ObjectId,
       ref: "chat"
     },

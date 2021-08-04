@@ -8,6 +8,7 @@ import {
   REGISTER,
   SET_ERROR,
   LOGOUT,
+  CHANGE_CHAT,
 } from "../types/auth.types"
 
 export function updateLoginField(login) {
@@ -78,5 +79,14 @@ export function logout() {
   return (dispatch) => {
     authService.logout()
     dispatch({ type: LOGOUT })
+  }
+}
+
+export function changeCurrentChat(chatID) {
+  return (dispatch, getState) => {
+    const { user } = getState().auth
+    user.defaultChatID = chatID
+    authService.changeCurrentChat({ user })
+    dispatch ({ type: CHANGE_CHAT, user })
   }
 }

@@ -38,6 +38,17 @@ const authService = {
         API.defaults.headers['Authorization'] = ''
         localStorage.removeItem('user')
         localStorage.removeItem('token')
+    },
+
+    changeCurrentChat: (data) => {
+        return API.post('/users/update', data)
+        .then(({ data }) => {
+            return data
+        })
+        .catch((err) => {
+            throw err
+        })
+
     }
 }
 

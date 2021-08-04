@@ -14,7 +14,8 @@ exports.connect = async (mongoURL = options.mongoURL) => {
   mongoose.connect(mongoURL, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false 
   })
   return mongoose.connection
 }

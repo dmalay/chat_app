@@ -8,13 +8,11 @@ import { fetchChats  } from "../redux/actions/chat.actions"
 
 const Main = () => {
   const dispatch = useDispatch()
-  const { _id, currentChat } = useSelector((s) => s.auth.user)
+  // const { _id, currentChat } = useSelector((s) => s.auth.user)
 
   useEffect(() => {
     dispatch(fetchChats())
-
   }, [dispatch])
-
 
   return (
     <div className="w-full h-screen shadow bg-white">

@@ -9,7 +9,7 @@ export const loginController = async (req, res) => {
   try {
     const { login, password } = req.body
     const user = await User.findAndValidateUser({ login, password })
-    const currentChat = await Chat.findById({ _id: user.currentChat }).exec()
+    const currentChat = await Chat.findById({ _id: user.defaultChatID }).exec()
     user.password = ""
     console.log(`user logged in: ${user.login}`)
     const token = generateToken(user)
@@ -31,7 +31,7 @@ export const tokenController = async (req, res) => {
     const bearerToken = req.headers.authorization.replace("Bearer ", "")
     const jwtUser = jwt.verify(bearerToken, options.jwtSecret)
     const user = await User.findById(jwtUser._id)
-    const currentChat = await Chat.findById({ _id: user.currentChat }).exec()
+    const currentChat = await Chat.findById({ _id: user.defaultChatID }).exec()
     user.password = ""
     const token = generateToken(user)
     console.log(`user ${user.login} logged in with current token`)
@@ -57,7 +57,7 @@ export const registerController = async (req, res) => {
       return res.status(400).send({ message: "This Login Already Exists" })
     }
     const currentChat = await Chat.findOne({ name: "general" }).exec()
-    const user = new User({ login, password, currentChat: currentChat._id })
+    const user = new User({ login, password, currentChatID: currentChat._id })
     await user.save()
     console.log(`new user registered: ${user.login}`)
     user.password = ""
