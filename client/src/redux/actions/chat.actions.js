@@ -1,4 +1,6 @@
-import { ADD_MESSAGE, SUBMIT_MESSAGE } from "../types/chat.types"
+import chatService from "../../services/chatService"
+
+import { ADD_MESSAGE, SUBMIT_MESSAGE, FETCH_CHATS } from "../types/chat.types"
 
 export function addMessage(message) {
     return (dispatch) => {
@@ -15,5 +17,17 @@ export function submitMessage(text) {
       text,
     }
     dispatch({ type: SUBMIT_MESSAGE, messages: [...messages, newMessage]})
+  }
+}
+
+export function fetchChats() {
+  return (dispatch) => {
+    chatService.fetchChats()
+    .then((data) => {
+      dispatch({ type: FETCH_CHATS, chats: data })
+    })
+    .catch((err) => {
+      throw err
+    })
   }
 }

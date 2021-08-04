@@ -1,8 +1,10 @@
-import { ADD_MESSAGE, SUBMIT_MESSAGE } from "../types/chat.types"
+import { ADD_MESSAGE, SUBMIT_MESSAGE, FETCH_CHATS } from "../types/chat.types"
 
 const initialState = {
   message: "",
-  messages: []
+  messages: [],
+  chats: [],
+  currentChat: {}
 }
 
 export default (state = initialState, action) => {
@@ -21,6 +23,14 @@ export default (state = initialState, action) => {
         messages
       }
     }
+    case FETCH_CHATS: {
+      const { chats } = action
+      return {
+        ...state,
+        chats
+      }
+    }
+
     default:
       return state
   }

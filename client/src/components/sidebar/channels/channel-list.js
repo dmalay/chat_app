@@ -1,10 +1,12 @@
-import React from 'react'
+import React from "react"
 
-const ChannelList = () => {
+const ChannelList = ({ name }) => {
   return (
-    <div className="text-white font-semibold bg-teal-500 mb-6 py-1 px-4">
+    <div
+    className="text-white font-semibold py-1 px-4 hover:bg-indigo-500"
+    >
       <span className="text-gray-300 pr-1">#</span>
-      Channel Name
+      <span className="">{name}</span>
     </div>
   )
 }

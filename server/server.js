@@ -28,13 +28,6 @@ passport.use('jwt', jwtStrategy)
 
 middleware.forEach((it) => app.use(it))
 
-// const userAdmin = new User({ login: "admin", password: "01234567890ABCDabcd+" })
-// const generalChat = new Chat({ title: 'chat definition: to talk someone in a friendly informal way', name: 'general', creator: userAdmin._id })
-// userAdmin.currentChat = generalChat._id
-// generalChat.subscribers = [userAdmin.id]
-// userAdmin.save()
-// generalChat.save()
-
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client/build')))
   app.get('*', function(req, res) {
