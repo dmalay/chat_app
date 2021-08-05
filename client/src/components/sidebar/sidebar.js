@@ -3,12 +3,13 @@ import { useSelector } from "react-redux"
 
 import Channels from "./channels/channels"
 import DirectMessages from "./direct-messages/direct-messages"
+import ChannelsBtn from "./channels/channels-btn"
 import LogoutBtn from "./logout"
 
 const Sidebar = () => {
   const { user } = useSelector((s) => s.auth)
   return (
-    <div className="w-1/5 h-screen bg-purple-900 text-purple-300  pb-6 hidden md:block">
+    <div className="relative w-1/5 h-screen bg-purple-900 text-purple-300  pb-6 hidden md:block">
       <h1 className="flex justify-between text-white text-2xl my-6 px-6">
         <span>chat.io</span>
         <svg
@@ -24,12 +25,11 @@ const Sidebar = () => {
         <span className="bg-green-500 rounded-full block w-2 h-2 mr-2"></span>
         <span className="text-purple-100">{user.login}</span>
       </div>
-      <div className="px-4 mb-2 font-sans">Channels</div>
+      <ChannelsBtn />
       <Channels />
       <div className="px-4 mb-3 font-sans">Direct Messages</div>
       <DirectMessages />
       <LogoutBtn />
-
     </div>
   )
 }
