@@ -1,4 +1,4 @@
-import { ADD_MESSAGE, SUBMIT_MESSAGE, FETCH_CHATS } from "../types/chat.types"
+import { ADD_MESSAGE, SUBMIT_MESSAGE, FETCH_CHATS, JOIN_CHAT } from "../types/chat.types"
 
 const initialState = {
   message: "",

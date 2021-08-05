@@ -1,10 +1,12 @@
-import React, { useState } from "react"
+import React, { useState, Fragment } from "react"
+import { useSelector } from "react-redux"
 
 import Modal from "../modal/modal"
 
 const channelsBtn = () => {
   const [modal, setModal] = useState(false)
-  // const [modalFolder, setModalFolder] = useState(false)
+  const { chats } = useSelector((s) => s.chat.chats)
+  const { _id } = useSelector((s) => s.auth.user)
 
   console.log(modal, "<modal")
 
@@ -17,13 +19,8 @@ const channelsBtn = () => {
         setModal(!modal)
       }}
     >
-      <span className="">Channels</span>
-      {modal && (
-        <Modal click={() => setModal(false)}>
-          {/* {modal} */}
-          <div></div>
-        </Modal>
-      )}
+      <p>Channels</p>
+      {modal && <Modal click={() => setModal(false)}></Modal>}
     </div>
   )
 }
