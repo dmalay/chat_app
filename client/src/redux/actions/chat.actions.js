@@ -5,6 +5,7 @@ import {
   SUBMIT_MESSAGE,
   FETCH_CHATS,
   JOIN_CHAT,
+  QUIT_CHAT,
 } from "../types/chat.types"
 
 export function addMessage(message) {
@@ -39,15 +40,28 @@ export function fetchChats() {
 }
 
 export function joinChat({ userID, _id }) {
-  return (dispatch, useState) => {
+  return (dispatch) => {
     chatService
       .joinChat({ userID, _id })
       .then((data) => {
-        console.log(data)
         dispatch({ type: JOIN_CHAT, chats: data.chats })
       })
       .catch((err) => {
         throw err
       })
+  }
+}
+
+export function quitChat({ userID, _id }) {
+  return (dispatch) => {
+    chatService
+    .quitChat({ userID, _id })
+    .then((data) => {
+      console.log(data)
+      dispatch({ type: QUIT_CHAT, chats: data.chats })
+    })
+    .catch((err) => {
+      throw err
+    })
   }
 }

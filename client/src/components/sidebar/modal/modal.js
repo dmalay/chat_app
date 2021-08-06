@@ -8,7 +8,6 @@ const Modal = (props) => {
   const { chats } = useSelector((s) => s.chat)
   const { _id } = useSelector((s) => s.auth.user)
 
-  console.log(">", folder, chats)
   const closeModal = (e) => {
     e.stopPropagation()
     if (e.target.classList.contains("modal-close")) {
@@ -48,17 +47,19 @@ const Modal = (props) => {
           </div>
           <div className="h-full px-4 pt-4 border-l border-r cursor-default">
             <div className=" h-full w-full bg-purple-900 border-r border-b overflow-y-auto flex flex-col">
-              {! folder && chats
-              .sort((a, b) => (b.subscribers.includes(_id) - a.subscribers.includes(_id)))
-              .map((it) => {
-                return (
-                  <ChannelListModal
-                    key={it._id}
-                    userID={_id}
-                    chat={it}
-                  />
-                )
-                })}
+              {!folder &&
+                chats
+                  .sort(
+                    (a, b) =>
+                      b.subscribers.includes(_id) - a.subscribers.includes(_id)
+                  )
+                  .map((it) => {
+                    if (it.name !== "general") {
+                      return (
+                        <ChannelListModal key={it._id} userID={_id} chat={it} />
+                      )
+                    }
+                  })}
             </div>
           </div>
           <div className="w-full bg-blue-500 p-2 font-light flex item-center justify-center border-b border-l border-r">

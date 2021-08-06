@@ -13,11 +13,24 @@ export const fetchController = async (req, res) => {
 export const joinController = async (req, res) => {
   try {
     const { userID, _id } = req.body
-    console.log(req.body)
     await Chat.findByIdAndUpdate({ _id }, { $push: { subscribers: userID } })
     const chats = await Chat.find({}).exec()
     return res.status(200).json({ message: "successfully joined", chats })
   } catch (e) {
     return res.status(500).json({ error: e.message })
   }
+}
+
+export const quitController = async (req, res) => {
+  try {
+    const { userID, _id } = req.body
+    console.log(req.body)
+    await Chat.findByIdAndUpdate({ _id }, { $pull: { subscribers: userID } })
+    const chats = await Chat.find({}).exec()
+    return res.status(200).json({ message: "successfully quitted", chats })
+  } catch(e) {
+
+    return res.status(500).json({ error: e.message })
+  }
+
 }

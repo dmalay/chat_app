@@ -21,6 +21,15 @@ const chatService = {
       })
   },
 
+  quitChat: (data) => {
+    return API.post("/chats/quit", data)
+      .then(({ data }) => {
+        return data
+      })
+      .catch((err) => {
+        throw err
+      })
+  },
 }
 
 export default chatService
