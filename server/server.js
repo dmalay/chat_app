@@ -28,6 +28,7 @@ passport.use('jwt', jwtStrategy)
 
 middleware.forEach((it) => app.use(it))
 
+
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client/build')))
   app.get('*', function(req, res) {
