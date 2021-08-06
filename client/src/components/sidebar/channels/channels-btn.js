@@ -5,10 +5,6 @@ import Modal from "../modal/modal"
 
 const channelsBtn = () => {
   const [modal, setModal] = useState(false)
-  const { chats } = useSelector((s) => s.chat)
-  const { _id } = useSelector((s) => s.auth.user)
-
-  console.log(modal, "<modal")
 
   return (
     <div

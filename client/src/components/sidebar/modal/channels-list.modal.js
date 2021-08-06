@@ -8,8 +8,6 @@ const ChannelListModal = ({ userID, chat }) => {
   const { name, subscribers, _id } = chat
   const chatActive = subscribers.includes(userID)
 
-  const x = name === "general"
-  console.log(chatActive, x)
   return (
     <div
       className={`text-white font-semibold flex justify-between hover:bg-indigo-500 ${
