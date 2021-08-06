@@ -1,3 +1,4 @@
+import { object } from "joi"
 import chatService from "../../services/chatService"
 
 import {
@@ -7,6 +8,7 @@ import {
   JOIN_CHAT,
   QUIT_CHAT,
   CREATE_CHAT,
+  SET_ERROR,
 } from "../types/chat.types"
 
 export function addMessage(message) {
@@ -67,14 +69,40 @@ export function quitChat({ userID, _id }) {
 }
 
 export function createChat({ name, title, _id }) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { errors } = getState().chat
     chatService
       .createChat({ name, title, _id })
       .then((data) => {
-        dispatch({ type: QUIT_CHAT, chats: data.chats })
+        dispatch({ type: CREATE_CHAT, chats: data.chats })
+        dispatch({
+          type: SET_ERROR,
+          errors: { ...errors, ...{ createChatError: false } },
+        })
       })
-      .catch((err) => {
-        throw err
+      .catch(() => {
+        dispatch({
+          type: SET_ERROR,
+          errors: { ...errors, ...{ createChatError: true } },
+        })
       })
+  }
+}
+export function resetError(err) {
+  return (dispatch, getState) => {
+    const { errors } = getState().chat
+    dispatch({ type: SET_ERROR, errors: { ...errors, ...{ [err]: false }}})
+  }
+}
+
+export function resetAllErrors() {
+  return (dispatch, getState) => {
+    const { errors } = getState().chat
+    Object.keys(errors).forEach((err) => {
+      dispatch({
+        type: SET_ERROR,
+        errors: { ...errors, ...{ [err]: false } },
+      })
+    })
   }
 }

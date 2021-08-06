@@ -5,6 +5,7 @@ import ChannelListModal from "../modal/channels-list.modal"
 import CreateChannel from "./create-channel.modal"
 
 const Modal = (props) => {
+  console.log(props)
   const [folder, setFolder] = useState(false)
   const { chats } = useSelector((s) => s.chat)
   const { _id } = useSelector((s) => s.auth.user)
@@ -12,7 +13,9 @@ const Modal = (props) => {
   const closeModal = (e) => {
     e.stopPropagation()
     if (e.target.classList.contains("modal-close")) {
-      return props.click()
+      return props.click.forEach((element) => {
+        element()
+      })
     }
   }
 
@@ -48,26 +51,22 @@ const Modal = (props) => {
           </div>
           <div className="h-full px-4 pt-4 border-l border-r cursor-default">
             <div className=" h-full w-full bg-purple-900 border-r border-b overflow-y-auto flex flex-col">
-              {!folder
-              ? (
-
+              {!folder ? (
                 chats
-                .sort(
-                  (a, b) =>
-                  b.subscribers.includes(_id) - a.subscribers.includes(_id)
+                  .sort(
+                    (a, b) =>
+                      b.subscribers.includes(_id) - a.subscribers.includes(_id)
                   )
                   .map((it) => {
                     if (it.name !== "general") {
                       return (
                         <ChannelListModal key={it._id} userID={_id} chat={it} />
-                        )
-                      }
-                    })
-                    )
-                    : (
-                      <CreateChannel/>
-                    )
-                }
+                      )
+                    }
+                  })
+              ) : (
+                <CreateChannel />
+              )}
             </div>
           </div>
           <div className="w-full bg-blue-500 p-2 font-light flex item-center justify-center border-b border-l border-r">

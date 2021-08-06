@@ -1,10 +1,12 @@
 import React, { useState, Fragment } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 
 import Modal from "../modal/modal"
+import { resetAllErrors } from "../../../redux/actions/chat.actions"
 
 const channelsBtn = () => {
   const [modal, setModal] = useState(false)
+  const dispatch = useDispatch()
 
   return (
     <div
@@ -16,7 +18,7 @@ const channelsBtn = () => {
       }}
     >
       <p>Channels</p>
-      {modal && <Modal click={() => setModal(false)}></Modal>}
+      {modal && <Modal click={[() => setModal(false), () => dispatch(resetAllErrors())]}></Modal>}
     </div>
   )
 }

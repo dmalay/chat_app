@@ -32,7 +32,6 @@ const chatService = {
   },
 
   createChat: (data) => {
-    console.log(data)
     return API.post("/chats/create", data)
       .then(({ data }) => {
         return data

@@ -1,13 +1,17 @@
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-import { createChat } from "../../../redux/actions/chat.actions"
+import { createChat, resetError } from "../../../redux/actions/chat.actions"
 
 const CreateChannel = () => {
   const { _id } = useSelector((s) => s.auth.user)
+  const { createChatError } = useSelector((s) => s.chat.errors)
   const dispatch = useDispatch()
-  const [name, setName] = useState()
-  const [title, setTitle] = useState()
+  const [name, setName] = useState('')
+  const [title, setTitle] = useState('')
+
+
+  console.log(createChatError)
 
   return (
     <div className="h-full text-m font-light flex flex-col  m-2">
@@ -21,6 +25,7 @@ const CreateChannel = () => {
           value={name}
           onChange={(e) => {
             setName(e.target.value)
+            dispatch(resetError('createChatError'))
           }}
         />
         <textarea
@@ -34,9 +39,11 @@ const CreateChannel = () => {
             setTitle(e.target.value)
           }}
         />
+        {createChatError &&
         <span className="text-sm  my-1  mx-2 font-light italic text-center text-yellow-200">
           * Sorry, This Channel Already Exists
         </span>
+        }
         <button
           className="text-center focus:outline-none my-3"
           onClick={() => {

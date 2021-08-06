@@ -35,10 +35,18 @@ export const quitController = async (req, res) => {
 export const createController = async (req, res) => {
   try {
     const { name, title, _id } = req.body
+
+    const chatExists = await Chat.exists({ name })
+    console.log(name, title, _id, chatExists)
+    if (chatExists) {
+      return res.status(400).json({ message: "chat already exists" })
+    }
+
     const chat = new Chat({ name, title, creator: _id })
     chat.subscribers.push(_id)
     await chat.save()
     const chats = await Chat.find({}).exec()
+    console.log(chat.name, chat)
     return res.status(200).json({ message: "new chat created", chats })
   } catch (e) {
     return res.status(500).json({ error: e.message })

@@ -5,12 +5,14 @@ import {
   JOIN_CHAT,
   QUIT_CHAT,
   CREATE_CHAT,
+  SET_ERROR,
 } from "../types/chat.types"
 
 const initialState = {
   message: "",
   messages: [],
   chats: [],
+  errors: {}
 }
 
 export default (state = initialState, action) => {
@@ -55,6 +57,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         chats,
+      }
+    }
+    case SET_ERROR: {
+      const { errors } = action
+      return {
+        ...state,
+        errors
       }
     }
 
