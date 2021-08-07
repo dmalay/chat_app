@@ -25,7 +25,7 @@ const Modal = (props) => {
       onClick={closeModal}
     >
       <div className="modal-close w-1/6 h-screen"></div>
-      <div className="w-1/4 mt-16 mr-auto h-3/4">
+      <div className="w-1/4 mt-16 h-3/4">
         <div className="m-2 w-full h-full border border-black bg-blue-500 flex flex-col justify-between">
           <div className="w-full bg-blue-800 font-light text-m flex items-center text-center justify-between border border-b-0">
             <span

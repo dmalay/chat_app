@@ -37,7 +37,6 @@ export const createController = async (req, res) => {
     const { name, title, _id } = req.body
 
     const chatExists = await Chat.exists({ name })
-    console.log(name, title, _id, chatExists)
     if (chatExists) {
       return res.status(400).json({ message: "chat already exists" })
     }

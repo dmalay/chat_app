@@ -9,7 +9,7 @@ import LogoutBtn from "./logout"
 const Sidebar = () => {
   const { user } = useSelector((s) => s.auth)
   return (
-    <div className="relative w-1/5 h-screen bg-purple-900 text-purple-300  pb-6 hidden md:block">
+    <div className="relative md:w-1/3 lg:w-1/4 xl:w-1/5 h-screen bg-purple-900 text-purple-300  pb-6 hidden md:block">
       <h1 className="flex justify-between text-white text-2xl my-6 px-6">
         <span>chat.io</span>
         <svg
@@ -21,15 +21,18 @@ const Sidebar = () => {
           </g>
         </svg>
       </h1>
-      <div className="flex items-center pt-2 mb-6 px-4">
-        <span className="bg-green-500 rounded-full block w-2 h-2 mr-2"></span>
-        <span className="text-purple-100">{user.login}</span>
+      <div className="flex justify-between">
+        <div className="flex items-center pt-2 mb-2 px-4">
+          <span className="bg-green-500 rounded-full block w-2 h-2 mr-2"></span>
+          <span className="text-purple-100">{user.login}</span>
+        </div>
+          <LogoutBtn />
       </div>
+
       <ChannelsBtn />
       <Channels />
       <div className="px-4 mb-3 font-sans">Direct Messages</div>
       <DirectMessages />
-      <LogoutBtn />
     </div>
   )
 }

@@ -15,11 +15,9 @@ const Main = () => {
   }, [dispatch])
 
   return (
-    <div className="w-full h-screen shadow bg-white">
-      <div className="flex">
+    <div className=" flex w-screen h-screen shadow bg-white">
         <Sidebar />
         <ChatContent />
-      </div>
     </div>
   )
 }

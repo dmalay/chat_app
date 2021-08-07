@@ -10,8 +10,8 @@ const channelsBtn = () => {
 
   return (
     <div
-      className={`px-4 py-2 mb-2 font-sans cursor-pointer ${
-        modal ? "bg-blue-600 text-white" : "hover:bg-blue-600 text-white"
+      className={`px-4 py-2 mb-2 font-sans hover:text-white cursor-pointer ${
+        modal ? "bg-blue-600 text-white" : "hover:bg-blue-600"
       }`}
       onClick={(e) => {
         setModal(!modal)

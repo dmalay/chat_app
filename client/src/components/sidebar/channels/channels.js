@@ -10,7 +10,7 @@ const Channels = () => {
   const { _id, defaultChatID } = useSelector((s) => s.auth.user)
 
   return (
-    <div className="mb-6 group">
+    <div className="mb-4">
       {chats.map((it) => {
         if (it.subscribers.includes(_id)) {
           return (
