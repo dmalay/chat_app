@@ -10,6 +10,7 @@ import jwtStrategy from './services/passport'
 
 import Chat from './models/chat.model'
 import User from './models/user.model'
+import SocketIO from './socket'
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -37,6 +38,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const server = http.createServer(app)
+
+SocketIO(server)
 
 server.listen(port, (error) => {
   if (error) throw error

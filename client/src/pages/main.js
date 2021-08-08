@@ -5,10 +5,13 @@ import Sidebar from "../components/sidebar/sidebar"
 import ChatContent from "../components/chat-content/chat-content"
 
 import { fetchChats  } from "../redux/actions/chat.actions"
+import useSocket from "../socket.io/socketConnect"
 
 const Main = () => {
   const dispatch = useDispatch()
-  // const { _id, currentChat } = useSelector((s) => s.auth.user)
+  const { user } = useSelector((s) => s.auth)
+
+  useSocket(user, dispatch)
 
   useEffect(() => {
     dispatch(fetchChats())

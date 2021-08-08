@@ -21,10 +21,10 @@ const Sidebar = () => {
           </g>
         </svg>
       </h1>
-      <div className="flex justify-between">
+      <div className="flex justify-between bg-indigo-800">
         <div className="flex items-center pt-2 mb-2 px-4">
           <span className="bg-green-500 rounded-full block w-2 h-2 mr-2"></span>
-          <span className="text-purple-100">{user.login}</span>
+          <span className="text-indigo-100">{user.login}</span>
         </div>
           <LogoutBtn />
       </div>
