@@ -4,6 +4,7 @@ import Chat from "../models/chat.model"
 export const updateController = async (req, res) => {
   try {
     const { _id, defaultChatID } = req.body.user
+
     await User.findByIdAndUpdate({ _id }, {defaultChatID})
 
     return res

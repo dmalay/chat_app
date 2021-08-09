@@ -14,9 +14,12 @@ const messageSchema = new mongoose.Schema(
     chatID: {
       type: Schema.Types.ObjectID, ref: 'chat',
       required: true,
-    },
+    }
   },
-  { timestamps: true }
+  { timestamps: true ,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+  }
 )
 
-export default mongoose.model("message", messageSchema)
+export const MessageModel = mongoose.model("message", messageSchema)

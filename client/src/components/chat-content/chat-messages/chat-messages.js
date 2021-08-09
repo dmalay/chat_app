@@ -3,14 +3,18 @@ import { useSelector } from "react-redux"
 
 import MessageForm from "./message-form"
 
-const ChatMessages = () => {
-  const { messages } = useSelector((s) => s.chat)
+const ChatMessages = ({ actualChat, currentChat }) => {
+  const { messages } = actualChat
+
   return (
     <>
     <div className="px-6 py-4 flex-1 flex-auto overflow-scroll-x overflow-y-auto">
-      {messages.map((it) => {
-        return <MessageForm key={it.time} message={it} />
-      })}
+      {actualChat?._id && currentChat?._id === actualChat._id
+      ?
+      messages.map((it) => {
+        return <MessageForm key={it._id} text={it.text} userId={it.fromUser} time={it.reatedAt}/>
+      })
+    : null }
     </div>
     </>
   )

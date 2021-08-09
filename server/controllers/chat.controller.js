@@ -1,12 +1,17 @@
 import User from "../models/user.model"
 import Chat from "../models/chat.model"
+import Message from "../models/message.model"
 
 export const fetchController = async (req, res) => {
   try {
+    const user = await User.findById(req.user._id)
+
     const chats = await Chat.find({}).exec()
-    return res.json(chats)
+    const actualChat = await Chat.findById(user.defaultChatID).populate('messages').exec()
+
+    return res.status(200).json({ message: "data fetched", chats, actualChat })
   } catch (err) {
-    return res.status(500).json({ error: e.message })
+    return res.status(500).json({ error: err.message })
   }
 }
 

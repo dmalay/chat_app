@@ -57,10 +57,12 @@ export const registerController = async (req, res) => {
       return res.status(400).send({ message: "This Login Already Exists" })
     }
     const currentChat = await Chat.findOne({ name: "general" }).exec()
-    const user = new User({ login, password, currentChatID: currentChat._id })
+    const user = new User({ login, password, defaultChatID: currentChat._id })
     await user.save()
+    await Chat.findByIdAndUpdate( currentChat._id , { $push: { subscribers: user._id } })
     console.log(`new user registered: ${user.login}`)
     user.password = ""
+    currentChat.subscribers.push(user._id)
     const token = generateToken(user)
     return res
       .status(200)

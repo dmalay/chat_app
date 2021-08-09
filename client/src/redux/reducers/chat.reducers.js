@@ -6,13 +6,17 @@ import {
   QUIT_CHAT,
   CREATE_CHAT,
   SET_ERROR,
+  SET_SOCKET,
+  RECEIVED_MESSAGE
 } from "../types/chat.types"
 
 const initialState = {
   message: "",
   messages: [],
   chats: [],
-  errors: {}
+  actualChat: {},
+  errors: {},
+  socket: {}
 }
 
 export default (state = initialState, action) => {
@@ -32,10 +36,11 @@ export default (state = initialState, action) => {
       }
     }
     case FETCH_CHATS: {
-      const { chats } = action
+      const { chats, actualChat } = action
       return {
         ...state,
         chats,
+        actualChat
       }
     }
     case JOIN_CHAT: {
@@ -64,6 +69,20 @@ export default (state = initialState, action) => {
       return {
         ...state,
         errors
+      }
+    }
+    case SET_SOCKET: {
+      const { socket } = action
+      return {
+        ...state,
+        socket
+      }
+    }
+    case RECEIVED_MESSAGE: {
+      const { message } = action
+      return {
+        ...state,
+        message
       }
     }
 

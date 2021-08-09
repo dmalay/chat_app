@@ -1,17 +1,28 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { submitMessage } from "../../redux/actions/chat.actions"
 
-const InputMessage = () => {
+const InputMessage = ({ user, currentChat }) => {
   const dispatch = useDispatch()
 
-  const [ message, setMessage ] = useState('')
+  const { socket } = useSelector((s) => s.chat)
+
+  // const currentChat = chats.find((it) => it._id === user.defaultChatID)
+
+  const [message, setMessage] = useState("")
 
   const sendInput = (e) => {
     if (message) {
+      const msg = {
+        text: message,
+        fromUser: user,
+        toSubscribers: currentChat.subscribers,
+        chatID: user.defaultID,
+      }
       if (e.key === "Enter" || e.type === "click") {
         dispatch(submitMessage(e.target.value))
         setMessage("")
+        socket.emit("message", msg)
       }
     }
   }
@@ -29,7 +40,7 @@ const InputMessage = () => {
       <input
         type="text"
         value={message}
-        placeholder="Message to #general"
+        placeholder={`Message to # ${typeof currentChat !== "undefined" ? currentChat.name : ''}`}
         className="w-full px-4"
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={sendInput}

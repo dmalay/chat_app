@@ -1,21 +1,15 @@
-import { object } from "joi"
 import chatService from "../../services/chatService"
 
 import {
-  ADD_MESSAGE,
   SUBMIT_MESSAGE,
   FETCH_CHATS,
   JOIN_CHAT,
   QUIT_CHAT,
   CREATE_CHAT,
   SET_ERROR,
+  SET_SOCKET,
+  RECEIVED_MESSAGE,
 } from "../types/chat.types"
-
-export function addMessage(message) {
-  return (dispatch) => {
-    dispatch({ type: ADD_MESSAGE, message })
-  }
-}
 
 export function submitMessage(text) {
   return (dispatch, getState) => {
@@ -34,7 +28,11 @@ export function fetchChats() {
     chatService
       .fetchChats()
       .then((data) => {
-        dispatch({ type: FETCH_CHATS, chats: data })
+        dispatch({
+          type: FETCH_CHATS,
+          chats: data.chats,
+          actualChat: data.actualChat,
+        })
       })
       .catch((err) => {
         throw err
@@ -91,7 +89,7 @@ export function createChat({ name, title, _id }) {
 export function resetError(err) {
   return (dispatch, getState) => {
     const { errors } = getState().chat
-    dispatch({ type: SET_ERROR, errors: { ...errors, ...{ [err]: false }}})
+    dispatch({ type: SET_ERROR, errors: { ...errors, ...{ [err]: false } } })
   }
 }
 
@@ -104,5 +102,17 @@ export function resetAllErrors() {
         errors: { ...errors, ...{ [err]: false } },
       })
     })
+  }
+}
+
+export function setSocket(socket) {
+  return (dispatch) => {
+    dispatch({ type: SET_SOCKET, socket })
+  }
+}
+
+export function receivedMessage(message) {
+  return (dispatch) => {
+    dispatch({ type: RECEIVED_MESSAGE, message })
   }
 }

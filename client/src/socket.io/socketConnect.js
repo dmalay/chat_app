@@ -1,25 +1,31 @@
-import React, { useEffect } from 'react'
-import SocketIOClient from 'socket.io-client'
+import React, { useEffect } from "react"
+import SocketIOClient from "socket.io-client"
+import { fetchChats, setSocket, receivedMessage } from "../redux/actions/chat.actions"
 
-function useSocket( user, dispatch) {
-    useEffect(() => {
-        const socket = SocketIOClient.connect()
-        socket.emit('join', user)
+function useSocket(user, dispatch) {
+  useEffect(() => {
 
-        // socket.on('typing', (user) =>{
-        //     console.log('event:', user)
-        // })
+      const socket = SocketIOClient.connect()
 
-        // socket.on('online', (it) =>{
-        //     console.log('event:', it)
-        // })
+      dispatch(setSocket(socket))
 
-        // socket.on('offline', (it) =>{
-        //     console.log('event:', it)
-        // })
+      socket.emit("join", user)
 
-    }, [dispatch])
+      socket.on("received", (message) => {
+        console.log("received:", message)
+        dispatch(receivedMessage(message))
+      })
 
+      // socket.on('online', (it) =>{
+      //     console.log('event:', it)
+      // })
+
+      // socket.on('offline', (it) =>{
+      //     console.log('event:', it)
+      // })
+
+
+  }, [dispatch])
 }
 
 export default useSocket
