@@ -46,10 +46,8 @@ const SocketIO = (server) => {
             chatID: message.chatID
           }
 
-          const newMessage = await new MessageModel(msg)
-
+          const newMessage = await MessageModel.create(msg)
           console.log(newMessage)
-          newMessage.save()
           io.to(sockets).emit('received', newMessage)
 
 

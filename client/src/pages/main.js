@@ -1,10 +1,8 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import Sidebar from "../components/sidebar/sidebar"
 import ChatContent from "../components/chat-content/chat-content"
-
-import { fetchChats  } from "../redux/actions/chat.actions"
 import useSocket from "../socket.io/socketConnect"
 
 const Main = () => {
@@ -12,10 +10,6 @@ const Main = () => {
   const { user } = useSelector((s) => s.auth)
 
   useSocket(user, dispatch)
-
-  useEffect(() => {
-    dispatch(fetchChats())
-  }, [dispatch, user.defaultChatID])
 
   return (
     <div className=" flex w-screen h-screen shadow bg-white">

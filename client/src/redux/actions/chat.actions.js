@@ -25,7 +25,7 @@ export function submitMessage(text) {
 
 export function fetchChats() {
   return (dispatch) => {
-    chatService
+    return chatService
       .fetchChats()
       .then((data) => {
         dispatch({
@@ -111,8 +111,15 @@ export function setSocket(socket) {
   }
 }
 
-export function receivedMessage(message) {
-  return (dispatch) => {
-    dispatch({ type: RECEIVED_MESSAGE, message })
+export function receivedMessage(message, userID) {
+  return (dispatch, getState) => {
+    const { actualChat } = getState().chat
+    if (actualChat._id === message.chatID) {
+      const chatCopy = { ...actualChat, messages: [...actualChat.messages, ...[message]]}
+
+
+      dispatch({ type: RECEIVED_MESSAGE, message, actualChat: chatCopy })
+    }
+
   }
 }

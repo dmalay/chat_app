@@ -11,7 +11,8 @@ import {
 } from "../types/chat.types"
 
 const initialState = {
-  message: "",
+  message: {},
+  scrollBottom:0,
   messages: [],
   chats: [],
   actualChat: {},
@@ -79,10 +80,11 @@ export default (state = initialState, action) => {
       }
     }
     case RECEIVED_MESSAGE: {
-      const { message } = action
+      const { message, actualChat } = action    
       return {
         ...state,
-        message
+        message,
+        actualChat
       }
     }
 
