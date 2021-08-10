@@ -42,6 +42,7 @@ const SocketIO = (server) => {
           const msg = {
             text: message.text,
             fromUser: message.fromUser._id,
+            name: message.fromUser.login,
             chatID: message.chatID
           }
 

@@ -15,7 +15,7 @@ const Main = () => {
 
   useEffect(() => {
     dispatch(fetchChats())
-  }, [dispatch])
+  }, [dispatch, user.defaultChatID])
 
   return (
     <div className=" flex w-screen h-screen shadow bg-white">

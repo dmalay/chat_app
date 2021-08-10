@@ -11,6 +11,9 @@ const messageSchema = new mongoose.Schema(
       type: Schema.Types.ObjectID, ref: 'user',
       required: true,
     },
+    name: {
+      type: String
+    },
     chatID: {
       type: Schema.Types.ObjectID, ref: 'chat',
       required: true,

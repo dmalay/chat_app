@@ -12,9 +12,9 @@ const ChatContent = () => {
   const currentChat = chats.find((it) => it._id === user.defaultChatID)
 
   return (
-    <div className="w-full h-screen flex flex-col">
+    <div className="w-full h-screen flex flex-col bg-indigo-100">
       <Topbar currentChat={currentChat}/>
-      <ChatMessages actualChat={actualChat} currentChat={currentChat}/>
+      <ChatMessages actualChat={actualChat} currentChat={currentChat} user={user.login}/>
       <InputMessage user={user} currentChat={currentChat}/>
     </div>
   )
