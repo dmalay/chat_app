@@ -9,9 +9,20 @@ export const fetchController = async (req, res) => {
     const chats = await Chat.find({}).exec()
     const actualChat = await Chat.findById(user.defaultChatID).populate('messages').exec()
 
-    return res.status(200).json({ message: "data fetched", chats, actualChat })
+    return res.status(200).json({ message: "initial data fetched", chats, actualChat })
   } catch (err) {
     return res.status(500).json({ error: err.message })
+  }
+}
+
+export const getController = async (req, res) => {
+  try {
+    const { chatId } = req.params
+    const actualChat = await Chat.findById(chatId).populate('messages').exec()
+    return res.status(200).json({ message: "chat data fetched", actualChat })
+
+  } catch(e) {
+    return res.status(500).json({ error: e.message })
   }
 }
 

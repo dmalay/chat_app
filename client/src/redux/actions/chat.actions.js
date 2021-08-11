@@ -1,8 +1,8 @@
 import chatService from "../../services/chatService"
 
 import {
-  SUBMIT_MESSAGE,
   FETCH_CHATS,
+  CHANGE_ACTUAL_CHAT,
   JOIN_CHAT,
   QUIT_CHAT,
   CREATE_CHAT,
@@ -10,18 +10,6 @@ import {
   SET_SOCKET,
   RECEIVED_MESSAGE,
 } from "../types/chat.types"
-
-export function submitMessage(text) {
-  return (dispatch, getState) => {
-    const store = getState()
-    const { messages } = store.chat
-    const newMessage = {
-      time: +new Date(),
-      text,
-    }
-    dispatch({ type: SUBMIT_MESSAGE, messages: [...messages, newMessage] })
-  }
-}
 
 export function fetchChats() {
   return (dispatch) => {
@@ -33,6 +21,20 @@ export function fetchChats() {
           chats: data.chats,
           actualChat: data.actualChat,
         })
+      })
+      .catch((err) => {
+        throw err
+      })
+  }
+}
+
+export function changeActualChat(chatId) {
+  return (dispatch) => {
+    chatService
+      .changeActualChat(chatId)
+      .then((data) => {
+        console.log(data)
+        dispatch({ type: CHANGE_ACTUAL_CHAT, actualChat: data.actualChat })
       })
       .catch((err) => {
         throw err
@@ -115,11 +117,12 @@ export function receivedMessage(message, userID) {
   return (dispatch, getState) => {
     const { actualChat } = getState().chat
     if (actualChat._id === message.chatID) {
-      const chatCopy = { ...actualChat, messages: [...actualChat.messages, ...[message]]}
-
+      const chatCopy = {
+        ...actualChat,
+        messages: [...actualChat.messages, ...[message]],
+      }
 
       dispatch({ type: RECEIVED_MESSAGE, message, actualChat: chatCopy })
     }
-
   }
 }

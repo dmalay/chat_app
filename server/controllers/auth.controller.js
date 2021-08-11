@@ -9,18 +9,14 @@ export const loginController = async (req, res) => {
   try {
     const { login, password } = req.body
     const user = await User.findAndValidateUser({ login, password })
-    const currentChat = await Chat.findById({ _id: user.defaultChatID }).exec()
     user.password = ""
     console.log(`user logged in: ${user.login}`)
     const token = generateToken(user)
-    return res
-      .status(200)
-      .json({
-        message: "User Successfully Logged In",
-        user,
-        token,
-        currentChat,
-      })
+    return res.status(200).json({
+      message: "User Successfully Logged In",
+      user,
+      token
+    })
   } catch (err) {
     return res.status(500).json({ message: err.message })
   }
@@ -31,13 +27,12 @@ export const tokenController = async (req, res) => {
     const bearerToken = req.headers.authorization.replace("Bearer ", "")
     const jwtUser = jwt.verify(bearerToken, options.jwtSecret)
     const user = await User.findById(jwtUser._id)
-    const currentChat = await Chat.findById({ _id: user.defaultChatID }).exec()
     user.password = ""
     const token = generateToken(user)
     console.log(`user ${user.login} logged in with current token`)
     return res
       .status(200)
-      .json({ message: "User Successfully Logged In", user, token, currentChat })
+      .json({ message: "User Successfully Logged In", user, token })
   } catch (err) {
     return res.status(500).json({ message: err.message })
   }
@@ -46,7 +41,7 @@ export const tokenController = async (req, res) => {
 export const registerController = async (req, res) => {
   try {
     const { login, password } = req.body
-    
+
     const { error } = registerValidation({ login, password })
     if (error) {
       return res.status(400).send(error.details[0].message)
@@ -59,19 +54,18 @@ export const registerController = async (req, res) => {
     const currentChat = await Chat.findOne({ name: "general" }).exec()
     const user = new User({ login, password, defaultChatID: currentChat._id })
     await user.save()
-    await Chat.findByIdAndUpdate( currentChat._id , { $push: { subscribers: user._id } })
+    await Chat.findByIdAndUpdate(currentChat._id, {
+      $push: { subscribers: user._id },
+    })
     console.log(`new user registered: ${user.login}`)
     user.password = ""
     currentChat.subscribers.push(user._id)
     const token = generateToken(user)
-    return res
-      .status(200)
-      .json({
-        message: "User Successfully Registered",
-        user,
-        token,
-        currentChat,
-      })
+    return res.status(200).json({
+      message: "User Successfully Registered",
+      user,
+      token,
+    })
   } catch (err) {
     return res.status(500).json({ message: err.message })
   }

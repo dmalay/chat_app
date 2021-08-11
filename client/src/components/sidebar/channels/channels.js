@@ -3,7 +3,8 @@ import { useSelector } from "react-redux"
 
 import ChannelList from "./channel-list"
 
-import { changeCurrentChat } from "../../../redux/actions/auth.actions"
+import { setDefaultChat } from "../../../redux/actions/auth.actions"
+import { changeActualChat } from "../../../redux/actions/chat.actions"
 
 const Channels = () => {
   const { chats } = useSelector((s) => s.chat)
@@ -18,7 +19,7 @@ const Channels = () => {
               key={it._id}
               name={it.name}
               _id={it._id}
-              changeChat={changeCurrentChat}
+              setNewChat={[setDefaultChat, changeActualChat]}
               isChatCurrent={it._id === defaultChatID}
             />
           )

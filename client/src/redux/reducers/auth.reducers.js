@@ -5,7 +5,7 @@ import {
   SET_ERROR,
   REGISTER,
   LOGOUT,
-  CHANGE_CHAT
+  SET_DEFAULT_CHAT
 } from "../types/auth.types"
 
 const initialState = {
@@ -68,7 +68,7 @@ export default (state = initialState, action) => {
         isLoggedIn: false,
       }
     }
-    case CHANGE_CHAT: {
+    case SET_DEFAULT_CHAT: {
       const { user } = action
       return {
         ...state,

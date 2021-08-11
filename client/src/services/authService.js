@@ -40,7 +40,7 @@ const authService = {
         localStorage.removeItem('token')
     },
 
-    changeCurrentChat: (data) => {
+    setDefaultChat: (data) => {
         return API.post('/users/update', data)
         .then(({ data }) => {
             return data

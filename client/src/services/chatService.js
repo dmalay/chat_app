@@ -11,6 +11,17 @@ const chatService = {
       })
   },
 
+  changeActualChat: (chatId) => {
+    return API.get(`/chats/current${chatId}`)
+    .then(({ data }) => {
+      console.log(data)
+      return data
+    })
+    .catch((err) => {
+      throw err
+    })
+  },
+
   joinChat: (data) => {
     return API.post("/chats/join", data)
       .then(({ data }) => {

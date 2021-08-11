@@ -1,9 +1,8 @@
 import React from "react"
 import { useDispatch } from "react-redux"
 
-import { changeCurrentChat } from "../../../redux/actions/auth.actions"
 
-const ChannelList = ({ name, _id, isChatCurrent }) => {
+const ChannelList = ({ name, _id, isChatCurrent, setNewChat }) => {
   const dispatch = useDispatch()
 
   return (
@@ -15,7 +14,9 @@ const ChannelList = ({ name, _id, isChatCurrent }) => {
       }`}
       onClick={() => {
         if (!isChatCurrent) {
-          dispatch(changeCurrentChat(_id))
+          setNewChat.forEach(element => {
+            dispatch(element(_id))
+          })
         }
       }}
     >
