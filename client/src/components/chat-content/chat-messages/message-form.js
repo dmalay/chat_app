@@ -20,7 +20,7 @@ const MessageForm = ({ text, name, time, isUserCurrent }) => {
         </div>
       ) : (
         <div className="flex py-1">
-          <div className="flex flex-col border border-gray-600 rounded-xl px-8 shadow bg-white items-start">
+          <div className="flex flex-col border border-gray-500 rounded-xl px-8 shadow bg-white items-start">
             <div className="flex items-start">
               <span className="font-bold mr-2 text-purple-800 font-sans">
                 {name}

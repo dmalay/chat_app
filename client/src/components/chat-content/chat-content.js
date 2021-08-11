@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from "react-redux"
 
-import Topbar from './topbar'
+import Topbar from './topbar/topbar'
 import ChatMessages from './chat-messages/chat-messages'
 import InputMessage from './input-message'
 
@@ -13,7 +13,7 @@ const ChatContent = () => {
 
   return (
     <div className="w-full h-screen flex flex-col bg-indigo-100">
-      <Topbar currentChat={currentChat}/>
+      <Topbar user={user} currentChat={currentChat}/>
       <ChatMessages actualChat={actualChat} currentChat={currentChat} user={user.login}/>
       <InputMessage user={user} currentChat={currentChat}/>
     </div>

@@ -7,7 +7,7 @@ const LogoutBtn = () => {
     const dispatch = useDispatch()
   return (
     <div className="flex px-6 mr-2 ">
-      <button className="focus:outline-none transition duration-500 ease-in-out transform hover:scale-110 cursor-pointer"
+      <button className="focus:outline-none transition duration-500 ease-in-out transform hover:scale-125 cursor-pointer"
       onClick={() => dispatch(logout())}>
         {/* <span className="mr-3">Logout</span> */}
         <svg

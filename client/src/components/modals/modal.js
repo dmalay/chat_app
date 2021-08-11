@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 import { useSelector } from "react-redux"
 
-import ChannelListModal from "../modal/channels-list.modal"
-import CreateChannel from "./create-channel.modal"
+import ChannelListModal from "./modal-components.js/channel-list.modal"
+import CreateChannel from "./modal-components.js/create-channel.modal"
 
 const Modal = (props) => {
   console.log(props)

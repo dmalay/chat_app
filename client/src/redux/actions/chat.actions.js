@@ -29,12 +29,14 @@ export function fetchChats() {
 }
 
 export function changeActualChat(chatId) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     chatService
       .changeActualChat(chatId)
       .then((data) => {
-        console.log(data)
-        dispatch({ type: CHANGE_ACTUAL_CHAT, actualChat: data.actualChat })
+        const { scrollBottom } = getState().chat
+        const newScrollBottom = scrollBottom + 1
+        console.log(newScrollBottom)
+        dispatch({ type: CHANGE_ACTUAL_CHAT, actualChat: data.actualChat, scrollBottom: newScrollBottom })
       })
       .catch((err) => {
         throw err

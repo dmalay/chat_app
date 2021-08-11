@@ -29,10 +29,11 @@ export default (state = initialState, action) => {
       }
     }
     case CHANGE_ACTUAL_CHAT: {
-      const { actualChat } = action
+      const { actualChat, scrollBottom } = action
       return {
         ...state,
         actualChat,
+        scrollBottom
       }
     }
     case JOIN_CHAT: {
