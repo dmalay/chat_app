@@ -70,11 +70,11 @@ export function quitChat({ userID, _id }) {
   }
 }
 
-export function createChat({ name, title, _id }) {
+export function createChat({ name, title, type, idForDm, _id }) {
   return (dispatch, getState) => {
     const { errors } = getState().chat
     chatService
-      .createChat({ name, title, _id })
+      .createChat({ name, title, type, idForDm, _id })
       .then((data) => {
         dispatch({ type: CREATE_CHAT, chats: data.chats })
         dispatch({

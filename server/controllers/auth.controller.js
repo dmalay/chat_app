@@ -9,6 +9,14 @@ export const loginController = async (req, res) => {
   try {
     const { login, password } = req.body
     const user = await User.findAndValidateUser({ login, password })
+
+    const defaultChatExists = await Chat.exists(user.defaultChatID)
+    if (!defaultChatExists) {
+      const general = await Chat.findOne({ name: 'general'})
+      user.defaultChatID = general._id
+      await user.save()
+    }
+
     user.password = ""
     console.log(`user logged in: ${user.login}`)
     const token = generateToken(user)
@@ -27,6 +35,14 @@ export const tokenController = async (req, res) => {
     const bearerToken = req.headers.authorization.replace("Bearer ", "")
     const jwtUser = jwt.verify(bearerToken, options.jwtSecret)
     const user = await User.findById(jwtUser._id)
+
+    const defaultChatExists = await Chat.exists(user.defaultChatID)
+    if (!defaultChatExists) {
+      const general = await Chat.findOne({ name: 'general'})
+      user.defaultChatID = general._id
+      await user.save()
+    }
+
     user.password = ""
     const token = generateToken(user)
     console.log(`user ${user.login} logged in with current token`)

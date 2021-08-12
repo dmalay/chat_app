@@ -5,16 +5,17 @@ const chatSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      require: true,
+      required: true,
       max: 80,
       min: 3,
     },
     name: {
       type: String,
-      require: true,
+      required: true,
       max: 20,
       min: 3,
     },
+    type: {type: String, required: true },
     creator: { type: Schema.Types.ObjectID, ref: "user" },
     subscribers: [{ type: Schema.Types.ObjectID, ref: "user" }],
   },

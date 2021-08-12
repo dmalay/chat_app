@@ -1,22 +1,23 @@
-import React, { useState } from "react"
-import PopupForDirect from "../popup-DM"
+import React from "react"
 
 const UserlistForm = (props) => {
-  console.log(props)
+  const { user, authId } = props
   return (
     <div>
       <button
         className="flex w-full items-center px-4 my-1 py-1 hover:bg-indigo-500
         appearance-none focus:outline-none"
         onClick={() => {
-
-          props.setPopup(true)
-          props.setUserForDm(props.user)
+          if(user._id !== authId) { 
+            props.setPopup(true)
+            props.setUserForDm(user)
+          }
         }}
       >
-        <span className="text-purple-100">subscriber</span>
+        <span className="text-purple-100">{user.login}</span>
         <i className="text-gray-300 text-sm mx-2 flex flex-1 items-start">
-          (me)
+        {user._id === authId ? '(me)' : null}
+          
         </i>
         <span className="bg-green-300 block w-2 h-2 mr-4 rounded-full"></span>
       </button>

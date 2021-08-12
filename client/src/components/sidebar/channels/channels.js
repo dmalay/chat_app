@@ -13,7 +13,8 @@ const Channels = () => {
   return (
     <div className="mb-4">
       {chats.map((it) => {
-        if (it.subscribers.includes(_id)) {
+        const ID = it.subscribers.find(it => it._id === _id)
+        if (ID && it.type === "public") {
           return (
             <ChannelList
               key={it._id}

@@ -47,7 +47,7 @@ const CreateChannel = () => {
         <button
           className="text-center focus:outline-none my-3"
           onClick={() => {
-            dispatch(createChat({ name, title, _id }))
+            dispatch(createChat({ name, title, _id, type:"public" }))
           }}
         >
           CREATE

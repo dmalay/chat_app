@@ -6,6 +6,7 @@ import PopupForDirect from "./popup-DM"
 
 const ModalUserlist = (props) => {
   const { actualChat } = useSelector((s) => s.chat)
+  const { _id, login } = useSelector((s) => s.auth.user)
   const [popup, setPopup] = useState(false)
   const [userForDm, setUserForDm] = useState({})
   console.log(popup, userForDm)
@@ -28,13 +29,27 @@ const ModalUserlist = (props) => {
       >
         <div className="border border-white flex flex-col h-full relative">
           <div className="text-white m-2 p-1 text-center">User List</div>
-          
-          {popup && <PopupForDirect click={() => setPopup(false)}/>}
 
+          {popup && (
+            <PopupForDirect
+              click={() => setPopup(false)}
+              userForDm={userForDm}
+              authId={_id}
+              authLogin={login}
+            />
+          )}
 
           <div className="mx-5 bg-purple-900 flex-1 border-r border-b">
-            {actualChat.subscribers.map((user, index) => {
-              return <UserlistForm key={index} user={user} setPopup={setPopup} setUserForDm={setUserForDm}/>
+            {actualChat.subscribers.map((user) => {
+              return (
+                <UserlistForm
+                  key={user._id}
+                  user={user}
+                  setPopup={setPopup}
+                  setUserForDm={setUserForDm}
+                  authId={_id}
+                />
+              )
             })}
           </div>
 
