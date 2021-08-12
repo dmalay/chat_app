@@ -1,11 +1,13 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+
 import DirectMessagesForm from './direct-messages-form'
 
-import UsersList from './users-list'
+import { setDefaultChat } from "../../../redux/actions/auth.actions"
+import { changeActualChat } from "../../../redux/actions/chat.actions"
 
 const DirectMessages = () => {
-  const { user } = useSelector((s) => s.auth)
+  const { _id, defaultChatID } = useSelector((s) => s.auth.user)
   const { chats } = useSelector((s) => s.chat)
 
   return (
@@ -16,9 +18,9 @@ const DirectMessages = () => {
             <DirectMessagesForm
               key={chat._id}
               chat={chat}
-              // _id={it._id}
-              // setNewChat={[setDefaultChat, changeActualChat]}
-              // isChatCurrent={it._id === defaultChatID}
+              authId={_id}
+              setNewChat={[setDefaultChat, changeActualChat]}
+              isChatCurrent={chat._id === defaultChatID}
             />
           )
         }

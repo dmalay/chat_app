@@ -51,38 +51,9 @@ export const quitController = async (req, res) => {
 export const createController = async (req, res) => {
   try {
     const { name, title, _id, type, idForDm } = req.body
-console.log(idForDm)
-
-
-
-
-
     const chatExists = type === 'private'
     ? await Chat.exists( {type: 'private', subscribers: { _id: _id, _id: idForDm } })
     : await Chat.exists({ name })
-
-    // if(type === 'private'){
-    //   const authChat = await Chat.find({type: 'private', subscribers: { _id: _id, _id: idForDm } }).lean()
-    //   const istrue = await Chat.exists( {type: 'private', subscribers: { _id: _id, _id: idForDm } })
-    //   // .exists({subscribers:{_id: idForDm}})
-    //   // .exists( {subscribers: { _id: idForDm }})
-      console.log('console', chatExists)
-    
-
-    // const chatExists = (
-    //   type === 'private'
-    // ? await Chat.exists( {subscribers: { _id: _id, _id: idForDm }})
-    // : await Chat.exists({ name })
-    // )
-// console.log(chatExists)
-
-// if(type === 'private'){
-  //   chatExists = Chat.exists( {subscribers: { _id: _id, _id: idForDm }})
-  // }
-  
-  
-  
-  // const chatExists = await Chat.exists({ name })
 
     if (chatExists) {
       return res.status(400).json({ message: "chat already exists" })
