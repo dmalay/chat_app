@@ -2,10 +2,13 @@ import React, { useState } from "react"
 import { useSelector } from "react-redux"
 
 import UserlistForm from "./modal-components.js/userlist-form"
+import PopupForDirect from "./popup-DM"
 
 const ModalUserlist = (props) => {
   const { actualChat } = useSelector((s) => s.chat)
-  console.log(actualChat)
+  const [popup, setPopup] = useState(false)
+  const [userForDm, setUserForDm] = useState({})
+  console.log(popup, userForDm)
 
   const closeModal = (e) => {
     e.stopPropagation()
@@ -23,11 +26,15 @@ const ModalUserlist = (props) => {
         className="w-72 h-96 top-0 right-0 z-20 absolute
       bg-blue-500 border border-black rounded shadow m-6 mt-12"
       >
-        <div className="border border-white flex flex-col h-full ">
-          <div className="text-white m-2 p-1">User List</div>
+        <div className="border border-white flex flex-col h-full relative">
+          <div className="text-white m-2 p-1 text-center">User List</div>
+          
+          {popup && <PopupForDirect click={() => setPopup(false)}/>}
+
+
           <div className="mx-5 bg-purple-900 flex-1 border-r border-b">
-            {actualChat.subscribers.map((user) => {
-              return <UserlistForm key={user._id} user={user} />
+            {actualChat.subscribers.map((user, index) => {
+              return <UserlistForm key={index} user={user} setPopup={setPopup} setUserForDm={setUserForDm}/>
             })}
           </div>
 
