@@ -2,7 +2,6 @@ import React from "react"
 
 const UserlistForm = (props) => {
   const { user, authId, popup } = props
-  console.log(user, authId )
   return (
     <div>
       <button

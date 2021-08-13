@@ -22,7 +22,11 @@ const MessageForm = ({ text, name, time, isUserCurrent }) => {
         <div className="flex py-1">
           <div className="flex flex-col border border-gray-500 rounded-xl px-8 shadow bg-white items-start">
             <div className="flex items-start">
-              <span className="font-bold mr-2 text-purple-800 font-sans">
+              <span
+              className="font-bold mr-2 text-purple-800 font-sans cursor-pointer
+                        transition duration-500 ease-in-out transform hover:scale-125"
+              onClick={() => {}}
+              >
                 {name}
               </span>
               <span className="text-gray-600 ml-2 mt-1 text-xs font-light">

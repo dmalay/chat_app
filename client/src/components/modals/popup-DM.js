@@ -10,13 +10,15 @@ const PopupForDirect = (props) => {
   const {
     userForDm,
     authId,
-    authLogin,
-    actualChatId,
-    actualChatType,
+    authLogin, 
     genChatId,
     setPopup, popup,
-    setModal, modal
+    setModal, modal,
+    activePvtChats,
+    activePvtDMs
   } = props
+
+  const privateChat = activePvtChats.find((it) => it.subscribers[0]._id === userForDm._id || it.subscribers[1]._id)
   const dispatch = useDispatch()
 
   const createPrivateChat = () => {
@@ -33,7 +35,7 @@ const PopupForDirect = (props) => {
 
   const deletePrivateChat = () => {
     console.log("click-delete")
-    dispatch(deleteChat(actualChatId))
+    dispatch(deleteChat(privateChat._id))
 
   }
 
@@ -47,7 +49,7 @@ const PopupForDirect = (props) => {
       <div
         className="fixed text-gray-500 overflow-auto bg-indigo-900 bg-opacity-30 
         left-0 right-0 top-0 bottom-0 transform  transition-transform duration-600 "
-        onClick={() => setPopup(!popup), () => setModal(!modal)}
+        onClick={() => setModal(!modal)}
       ></div>
       <div className="absolute bg-white mx-3 my-8 border rounded flex flex-col w-60 z-50 l">
         <div className="items-center">
@@ -58,7 +60,7 @@ const PopupForDirect = (props) => {
 
         <div className="text-center p-2 flex-auto justify-center">
           <p className="text-m text-gray-600 px-10">
-            {actualChatType === "private"
+            {activePvtDMs.includes(userForDm._id)
               ? "Quit private chat with this user?"
               : "Message directly to this user?"}
           </p>
@@ -68,13 +70,14 @@ const PopupForDirect = (props) => {
           className=" p-3 flex mt-2 text-center flex text-sm tracking-widest
         font-extrabold md:block"
         >
-          {actualChatType === "private" ? (
+          {activePvtDMs.includes(userForDm._id) ? (
             <p
             className="bg-white py-2 shadow-sm  border text-green-600 rounded border-gray-400
             hover:shadow-lg hover:bg-gray-100"
-            // onClick={closePopup}
             onClick={()=> {
-              changeChatToGeneral(), deletePrivateChat(), () => setPopup(!popup), () => setModal(!modal)
+              changeChatToGeneral()
+              deletePrivateChat()
+              setModal(!modal)
             }}
             >
               YES

@@ -131,11 +131,13 @@ export function receivedMessage(message, userID) {
 }
 
 export function deleteChat(chatId) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { chats } =getState().chat  
     chatService
     .deleteChat(chatId)
     .then((data) => {
-      dispatch({ type: DELETE_PRIVATE_CHAT, data })
+      const newChats = chats.filter(chat => chat._id !== chatId)
+      dispatch({ type: DELETE_PRIVATE_CHAT, chats: newChats })
     })
     .catch((err) => {
       throw err

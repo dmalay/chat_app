@@ -1,6 +1,6 @@
 import User from "../models/user.model"
 import Chat from "../models/chat.model"
-import Message from "../models/message.model"
+import Message, { MessageModel } from "../models/message.model"
 
 export const fetchController = async (req, res) => {
   try {
@@ -65,12 +65,15 @@ export const createController = async (req, res) => {
     const chatExists =
       type === "private"
         ? await Chat.exists({
-            type: "private",
-            subscribers: { _id: _id, _id: idForDm },
+            $and: [
+              { type: { $eq: "private" } },
+              { subscribers: { $eq: _id } },
+              { subscribers: { $eq: idForDm } },
+            ],
           })
         : await Chat.exists({ name })
 
-
+    console.log(chatExists)
     if (chatExists) {
       return res.status(400).json({ message: "chat already exists" })
     }
@@ -95,27 +98,22 @@ export const deleteController = async (req, res) => {
   try {
     const { chatId } = req.params
     const { user } = req
-    // console.log("iid", chatId, "params", user)
-
     const chat = await Chat.findById(chatId).lean()
-    // const somedata = await Chat.exists({
-    //   type: "private",
-    //   subscribers: { _id: user._id },
-    // })
-
-    // console.log("chat", chat, "somedata", somedata)
-
     if (chat.type === "public") {
       return res.status(400).json({ message: "you cannot delete public chat" })
     }
 
-    const user1 = User.findById(user._id).lean()
+    const user1 = await User.findById(user._id).lean()
+    const hasMessages = await MessageModel.exists({ chatID: chatId })
+    if(hasMessages) {
+        await MessageModel.deleteMany({ chatID: chatId })
+      }
+      
+      await Chat.findByIdAndRemove(chatId)
     console.log(`chat ${chat.title} deleted by user${user1.login}`)
-
-    await Chat.findByIdAndRemove(chatId)
     return res
       .status(200)
-      .json({ message: "private chat successfully deleted" })
+      .json({ message: "private chat and messages successfully deleted" })
   } catch (e) {
     return res.status(500).json({ error: e.message })
   }

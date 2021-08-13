@@ -81,8 +81,10 @@ export default (state = initialState, action) => {
       }
     }
     case DELETE_PRIVATE_CHAT: {
+      const { chats } = action
       return {
-        ...state
+        ...state,
+        chats
       }
     }
 

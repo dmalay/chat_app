@@ -5,13 +5,12 @@ import UserlistForm from "./modal-components.js/userlist-form"
 import PopupForDirect from "./popup-DM"
 
 const ModalUserlist = (props) => {
-  const { modal, setModal} = props
+  const { modal, setModal } = props
   const { actualChat, chats } = useSelector((s) => s.chat)
   const { _id, login } = useSelector((s) => s.auth.user)
   const [popup, setPopup] = useState(false)
   const [userForDm, setUserForDm] = useState({})
-  const genChat = chats.find((it) => it.name === 'general')
-  console.log('popup',  popup)
+  const genChat = chats.find((it) => it.name === "general")
 
   const closeModal = (e) => {
     e.stopPropagation()
@@ -19,6 +18,24 @@ const ModalUserlist = (props) => {
       return props.click()
     }
   }
+
+  const activePvtChats = chats.filter(((it) =>{
+    const subscribed = Boolean(it.subscribers.find((it) => it._id === _id))
+    return it.type === 'private' && subscribed
+  } ))
+
+  const activePvtDMs = chats.reduce((acc, rec) => {
+    if (rec.type === "private") {
+      if (rec.subscribers[0]._id === _id) {
+        return [...acc, rec.subscribers[1]._id ]
+      }
+      if (rec.subscribers[1]._id === _id) {
+       return [...acc, rec.subscribers[0]._id]
+      }
+      return acc
+    }
+  return acc
+  }, [])
 
   return (
     <div
@@ -34,17 +51,18 @@ const ModalUserlist = (props) => {
 
           {popup && (
             <PopupForDirect
-            setPopup={setPopup}
-            popup={popup}
-            setModal={setModal}
-            modal={modal}
-              click={() => setPopup(false)}
+              setPopup={setPopup}
+              popup={popup}
+              setModal={setModal}
+              modal={modal}
               userForDm={userForDm}
               authId={_id}
               authLogin={login}
               actualChatType={actualChat.type}
               actualChatId={actualChat._id}
               genChatId={genChat._id}
+              activePvtChats={activePvtChats}
+              activePvtDMs={activePvtDMs}
             />
           )}
 
