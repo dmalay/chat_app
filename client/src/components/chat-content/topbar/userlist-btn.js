@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux"
 import ModalUserlist from "../../modals/modal-userlist"
 
 const UserListBtn = () => {
-  const dispatch = useDispatch()
   const [modal, setModal] = useState(false)
 
   return (
@@ -30,7 +29,13 @@ const UserListBtn = () => {
         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
       </svg>
       <span className="text-2xl mx-2">1</span>
-      {modal && <ModalUserlist click={() => setModal(false)} />}
+      {modal && (
+        <ModalUserlist
+          click={() => setModal(false)}
+          modal={setModal}
+          setModal={setModal}
+        />
+      )}
     </div>
   )
 }

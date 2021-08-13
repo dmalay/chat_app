@@ -7,6 +7,7 @@ import {
   SET_ERROR,
   SET_SOCKET,
   RECEIVED_MESSAGE,
+  DELETE_PRIVATE_CHAT
 } from "../types/chat.types"
 
 const initialState = {
@@ -77,6 +78,11 @@ export default (state = initialState, action) => {
         ...state,
         message,
         actualChat,
+      }
+    }
+    case DELETE_PRIVATE_CHAT: {
+      return {
+        ...state
       }
     }
 

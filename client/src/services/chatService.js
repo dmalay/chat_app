@@ -14,7 +14,6 @@ const chatService = {
   changeActualChat: (chatId) => {
     return API.get(`/chats/current${chatId}`)
     .then(({ data }) => {
-      console.log(data)
       return data
     })
     .catch((err) => {
@@ -51,6 +50,18 @@ const chatService = {
         throw err
       })
   },
+
+  deleteChat: (chatId) => {
+    console.log(chatId)
+    return API.delete(`/chats/${chatId}`)
+    .then(({ data }) => {
+      return data
+    })
+    .catch((err) => {
+      throw err
+    })
+  },
+
 }
 
 export default chatService

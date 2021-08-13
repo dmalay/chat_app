@@ -54,13 +54,16 @@ const Modal = (props) => {
               {!folder ? (
                 chats
                   .sort(
-                    (a, b) =>
-                      b.subscribers.includes(_id) - a.subscribers.includes(_id)
+                    (a, b) => {
+                      const b_chat = Boolean(b.subscribers.find(it => it._id == _id))
+                      const a_chat = Boolean(a.subscribers.find(it => it._id == _id))
+                      return b_chat - a_chat
+                    }
                   )
                   .map((it) => {
-                    if (it.name !== "general") {
+                    if (it.name !== "general" && it.type === 'public') {
                       return (
-                        <ChannelListModal key={it._id} userID={_id} chat={it} />
+                        <ChannelListModal key={it._id} authID={_id} chat={it} />
                       )
                     }
                   })

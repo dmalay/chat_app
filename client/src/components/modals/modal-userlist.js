@@ -5,11 +5,13 @@ import UserlistForm from "./modal-components.js/userlist-form"
 import PopupForDirect from "./popup-DM"
 
 const ModalUserlist = (props) => {
-  const { actualChat } = useSelector((s) => s.chat)
+  const { modal, setModal} = props
+  const { actualChat, chats } = useSelector((s) => s.chat)
   const { _id, login } = useSelector((s) => s.auth.user)
   const [popup, setPopup] = useState(false)
   const [userForDm, setUserForDm] = useState({})
-  console.log(popup, userForDm)
+  const genChat = chats.find((it) => it.name === 'general')
+  console.log('popup',  popup)
 
   const closeModal = (e) => {
     e.stopPropagation()
@@ -32,10 +34,17 @@ const ModalUserlist = (props) => {
 
           {popup && (
             <PopupForDirect
+            setPopup={setPopup}
+            popup={popup}
+            setModal={setModal}
+            modal={modal}
               click={() => setPopup(false)}
               userForDm={userForDm}
               authId={_id}
               authLogin={login}
+              actualChatType={actualChat.type}
+              actualChatId={actualChat._id}
+              genChatId={genChat._id}
             />
           )}
 
@@ -45,6 +54,7 @@ const ModalUserlist = (props) => {
                 <UserlistForm
                   key={user._id}
                   user={user}
+                  popup={popup}
                   setPopup={setPopup}
                   setUserForDm={setUserForDm}
                   authId={_id}

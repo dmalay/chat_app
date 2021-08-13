@@ -1,7 +1,8 @@
 import React from "react"
 
 const UserlistForm = (props) => {
-  const { user, authId } = props
+  const { user, authId, popup } = props
+  console.log(user, authId )
   return (
     <div>
       <button
@@ -9,7 +10,7 @@ const UserlistForm = (props) => {
         appearance-none focus:outline-none"
         onClick={() => {
           if(user._id !== authId) { 
-            props.setPopup(true)
+            props.setPopup(!popup)
             props.setUserForDm(user)
           }
         }}

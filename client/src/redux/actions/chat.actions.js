@@ -9,6 +9,7 @@ import {
   SET_ERROR,
   SET_SOCKET,
   RECEIVED_MESSAGE,
+  DELETE_PRIVATE_CHAT
 } from "../types/chat.types"
 
 export function fetchChats() {
@@ -44,10 +45,10 @@ export function changeActualChat(chatId) {
   }
 }
 
-export function joinChat({ userID, _id }) {
+export function joinChat({ authID, _id }) {
   return (dispatch) => {
     chatService
-      .joinChat({ userID, _id })
+      .joinChat({ authID, _id })
       .then((data) => {
         dispatch({ type: JOIN_CHAT, chats: data.chats })
       })
@@ -57,10 +58,10 @@ export function joinChat({ userID, _id }) {
   }
 }
 
-export function quitChat({ userID, _id }) {
+export function quitChat({ authID, _id }) {
   return (dispatch) => {
     chatService
-      .quitChat({ userID, _id })
+      .quitChat({ authID, _id })
       .then((data) => {
         dispatch({ type: QUIT_CHAT, chats: data.chats })
       })
@@ -126,5 +127,18 @@ export function receivedMessage(message, userID) {
 
       dispatch({ type: RECEIVED_MESSAGE, message, actualChat: chatCopy })
     }
+  }
+}
+
+export function deleteChat(chatId) {
+  return (dispatch) => {
+    chatService
+    .deleteChat(chatId)
+    .then((data) => {
+      dispatch({ type: DELETE_PRIVATE_CHAT, data })
+    })
+    .catch((err) => {
+      throw err
+    })
   }
 }
