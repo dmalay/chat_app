@@ -14,7 +14,7 @@ const ChatContent = () => {
   return (
     <div className="w-full h-screen flex flex-col bg-indigo-100">
       <Topbar user={user} currentChat={currentChat}/>
-      <ChatMessages actualChat={actualChat} currentChat={currentChat} user={user.login}/>
+      <ChatMessages actualChat={actualChat} currentChat={currentChat} user={user}/>
       <InputMessage user={user} currentChat={currentChat}/>
     </div>
   )

@@ -9,12 +9,14 @@ import { changeActualChat } from "../../../redux/actions/chat.actions"
 const DirectMessages = () => {
   const { _id, defaultChatID } = useSelector((s) => s.auth.user)
   const { chats } = useSelector((s) => s.chat)
+  const actualChatId =useSelector((s) => s.chat.actualChat._id)
 
   return (
     <div className="mb-4">
       {chats.map((chat) => {
         if (chat.type === "private") {
           const isChatCorrect = Boolean(chat.subscribers.find(it => it._id === _id))
+          console.log(chat)
           return (
             isChatCorrect &&
             <DirectMessagesForm
@@ -22,7 +24,7 @@ const DirectMessages = () => {
               chat={chat}
               authId={_id}
               setNewChat={[setDefaultChat, changeActualChat]}
-              isChatCurrent={chat._id === defaultChatID}
+              isChatCurrent={chat._id === actualChatId}
             />
           )
         }

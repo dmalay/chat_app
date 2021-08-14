@@ -18,7 +18,7 @@ const PopupForDirect = (props) => {
     activePvtDMs
   } = props
 
-  const privateChat = activePvtChats.find((it) => it.subscribers[0]._id === userForDm._id || it.subscribers[1]._id)
+  const privateChat = activePvtChats.filter((it) => it.subscribers[0]._id === userForDm._id || it.subscribers[1]._id === userForDm._id)
   const dispatch = useDispatch()
 
   const createPrivateChat = () => {
@@ -35,7 +35,7 @@ const PopupForDirect = (props) => {
 
   const deletePrivateChat = () => {
     console.log("click-delete")
-    dispatch(deleteChat(privateChat._id))
+    dispatch(deleteChat(privateChat[0]._id))
 
   }
 
@@ -44,12 +44,18 @@ const PopupForDirect = (props) => {
     dispatch(changeActualChat(genChatId))
   }
 
+  const closeAll = () => {
+    return typeof modal === 'undefined'
+    ? setPopup(!popup)
+    : setModal(!modal)
+  }
+
   return (
     <>
       <div
         className="fixed text-gray-500 overflow-auto bg-indigo-900 bg-opacity-30 
         left-0 right-0 top-0 bottom-0 transform  transition-transform duration-600 "
-        onClick={() => setModal(!modal)}
+        onClick={() => closeAll()}
       ></div>
       <div className="absolute bg-white mx-3 my-8 border rounded flex flex-col w-60 z-50 l">
         <div className="items-center">
@@ -77,7 +83,7 @@ const PopupForDirect = (props) => {
             onClick={()=> {
               changeChatToGeneral()
               deletePrivateChat()
-              setModal(!modal)
+              closeAll()
             }}
             >
               YES
@@ -88,7 +94,7 @@ const PopupForDirect = (props) => {
                          hover:shadow-lg hover:bg-gray-100"
               onClick={()=> {
                 createPrivateChat()
-                setPopup(!popup)
+                closeAll()
               }}
             >
               YES

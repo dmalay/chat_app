@@ -1,6 +1,6 @@
 import React from "react"
 
-const MessageForm = ({ text, name, time, isUserCurrent }) => {
+const MessageForm = ({ text, name, fromUser, time, isUserCurrent, popup, setPopup, setUserForDm }) => {
   return (
     <>
       {" "}
@@ -25,7 +25,13 @@ const MessageForm = ({ text, name, time, isUserCurrent }) => {
               <span
               className="font-bold mr-2 text-purple-800 font-sans cursor-pointer
                         transition duration-500 ease-in-out transform hover:scale-125"
-              onClick={() => {}}
+              onClick={() => {
+                setUserForDm({
+                  login: name,
+                  _id: fromUser
+                })
+                setPopup(!popup)
+              }}
               >
                 {name}
               </span>
