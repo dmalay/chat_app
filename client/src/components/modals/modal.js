@@ -5,7 +5,6 @@ import ChannelListModal from "./modal-components.js/channel-list.modal"
 import CreateChannel from "./modal-components.js/create-channel.modal"
 
 const Modal = (props) => {
-  console.log(props)
   const [folder, setFolder] = useState(false)
   const { chats } = useSelector((s) => s.chat)
   const { _id } = useSelector((s) => s.auth.user)

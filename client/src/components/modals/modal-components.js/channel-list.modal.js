@@ -7,7 +7,6 @@ const ChannelListModal = ({ authID, chat }) => {
   const dispatch = useDispatch()
   const { name, subscribers, _id } = chat
   const chatActive = subscribers.find((id) => id._id === authID)
-  console.log(subscribers, chatActive)
 
   return (
     <div

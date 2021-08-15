@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useSelector } from "react-redux"
 
 const InputMessage = ({ user, currentChat }) => {
-  const { socket } = useSelector((s) => s.chat)
+  const { socket, sender } = useSelector((s) => s.chat)
   const [message, setMessage] = useState("")
 
   const sendInput = (e) => {
@@ -20,7 +20,37 @@ const InputMessage = ({ user, currentChat }) => {
     }
   }
 
+  const handleMessage = (e) => {
+    const value = e.target.value
+    setMessage(value)
+
+    const receiver = {
+      chatId: currentChat._id,
+      fromUser: user,
+      toSubscribers: currentChat.subscribers
+    }
+    console.log('receiver>', receiver)
+    if(value.length === 1) {  //prevent emiting on every keystroke, first letter is enough to inform of 'typing..'
+      receiver.typing = true
+      socket.emit('typing', receiver)
+    }
+    if(value.length === 0) {
+      receiver.typing = false
+      socket.emit('typing', receiver)
+    }
+
+  }
+
   return (
+    <>
+      {sender.typing && sender.chatId === currentChat._id
+      ?  
+      <div className="flex italic font-light text-red-500 justify-start mx-12 transparent">
+        {sender.fromUser.login} is typing...
+      </div>
+
+       : null
+       }
     <div className="flex m-6 mt-0 rounded-lg border-2 border-gray-500 bg-white">
       <button
         type="button"
@@ -37,10 +67,11 @@ const InputMessage = ({ user, currentChat }) => {
           typeof currentChat !== "undefined" ? currentChat.name : ""
         }`}
         className="w-full px-4"
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={handleMessage}
         onKeyDown={sendInput}
       />
     </div>
+    </>
   )
 }
 

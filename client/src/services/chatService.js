@@ -52,7 +52,6 @@ const chatService = {
   },
 
   deleteChat: (chatId) => {
-    console.log(chatId)
     return API.delete(`/chats/${chatId}`)
     .then(({ data }) => {
       return data

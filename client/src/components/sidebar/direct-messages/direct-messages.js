@@ -16,7 +16,6 @@ const DirectMessages = () => {
       {chats.map((chat) => {
         if (chat.type === "private") {
           const isChatCorrect = Boolean(chat.subscribers.find(it => it._id === _id))
-          console.log(chat)
           return (
             isChatCorrect &&
             <DirectMessagesForm

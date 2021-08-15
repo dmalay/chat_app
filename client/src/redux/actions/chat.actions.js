@@ -7,9 +7,10 @@ import {
   QUIT_CHAT,
   CREATE_CHAT,
   SET_ERROR,
+  DELETE_PRIVATE_CHAT,
   SET_SOCKET,
   RECEIVED_MESSAGE,
-  DELETE_PRIVATE_CHAT
+  SENDER_TYPING
 } from "../types/chat.types"
 
 export function fetchChats() {
@@ -127,6 +128,12 @@ export function receivedMessage(message, userID) {
 
       dispatch({ type: RECEIVED_MESSAGE, message, actualChat: chatCopy })
     }
+  }
+}
+
+export function senderTyping(sender) {
+  return (dispatch) => {
+    dispatch({ type: SENDER_TYPING, sender })
   }
 }
 

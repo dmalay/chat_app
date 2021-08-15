@@ -42,7 +42,6 @@ const ChatMessages = ({ actualChat, currentChat, user }) => {
     return acc
   }, [])
 
-  console.log(userForDm)
   return (
     <>
       <div

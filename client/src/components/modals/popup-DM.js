@@ -34,13 +34,11 @@ const PopupForDirect = (props) => {
   }
 
   const deletePrivateChat = () => {
-    console.log("click-delete")
     dispatch(deleteChat(privateChat[0]._id))
 
   }
 
   const changeChatToGeneral = () => {
-    console.log("click-change")
     dispatch(changeActualChat(genChatId))
   }
 
@@ -73,12 +71,12 @@ const PopupForDirect = (props) => {
         </div>
 
         <div
-          className=" p-3 flex mt-2 text-center flex text-sm tracking-widest
+          className="p-3 flex mt-2 text-center flex text-sm tracking-widest
         font-extrabold md:block"
         >
           {activePvtDMs.includes(userForDm._id) ? (
             <p
-            className="bg-white py-2 shadow-sm  border text-green-600 rounded border-gray-400
+            className="cursor-pointer bg-white py-2 shadow-sm  border text-green-600 rounded border-gray-400
             hover:shadow-lg hover:bg-gray-100"
             onClick={()=> {
               changeChatToGeneral()
@@ -90,7 +88,7 @@ const PopupForDirect = (props) => {
             </p>
           ) : (
             <p
-              className="bg-white py-2 shadow-sm  border text-green-600 rounded border-gray-400
+              className="cursor-pointer bg-white py-2 shadow-sm  border text-green-600 rounded border-gray-400
                          hover:shadow-lg hover:bg-gray-100"
               onClick={()=> {
                 createPrivateChat()
@@ -101,7 +99,7 @@ const PopupForDirect = (props) => {
             </p>
           )}
           <p
-            className="mb-2 bg-red-500 border border-red-800 py-2 shadow-sm text-white
+            className="cursor-pointer mb-2 bg-red-500 border border-red-800 py-2 shadow-sm text-white
             rounded hover:shadow-lg hover:bg-red-600"
             onClick={() => setPopup(!popup)}
           >

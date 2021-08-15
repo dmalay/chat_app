@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux"
 const DirectMessagesForm = ({ chat, authId, isChatCurrent, setNewChat }) => {
   const dispatch = useDispatch()
   const userToDm = chat.subscribers.find((it) => it._id !== authId)
-  console.log('is current chat',isChatCurrent)
 
   return (
     <div
