@@ -1,10 +1,7 @@
 import { Server } from "socket.io"
-import Message from "../models/message.model"
 import { MessageModel } from "../models/message.model"
 
 import onlineHandler, { usersOnline } from "./onlineHandler"
-
-// const users = {}
 
 const SocketIO = (server) => {
   const io = new Server(server)
@@ -12,7 +9,11 @@ const SocketIO = (server) => {
   io.on("connection", (socket) => {
     //user connected
     socket.on("join", async (user) => {
-      onlineHandler.add(socket.id, user._id)
+      try {
+        onlineHandler.add(socket.id, user._id)
+      } catch (e) {
+        console.log(e)
+      }
     })
 
     socket.on("message", async (message) => {
@@ -34,24 +35,36 @@ const SocketIO = (server) => {
     })
 
     socket.on("typing", async (message) => {
-      socket.broadcast.emit("typing", message)
+      try {
+        socket.broadcast.emit("typing", message)
+      } catch (e) {
+        console.log(e)
+      }
     })
 
     socket.on("logout", async (user) => {
-      const userSockets = onlineHandler.getAllSocketsByUserId(user._id)
-      userSockets.forEach((sock) => {
-        if (sock === socket.id) {
-          onlineHandler.delete(socket.id)
-        } else {
-          io.to(sock).emit("logged out", sock)
-        }
-      })
+      //user logged out and explicitly disconnected all sessions
+      try {
+        const userSockets = onlineHandler.getAllSocketsByUserId(user._id)
+        userSockets.forEach((sock) => {
+          if (sock === socket.id) {
+            onlineHandler.delete(socket.id)
+          } else {
+            io.to(sock).emit("logged out", sock)
+          }
+        })
+      } catch (e) {
+        console.log(e)
+      }
     })
 
     socket.on("disconnect", async () => {
       //user disconnected(browser closed)
-      console.log
-      onlineHandler.delete(socket.id)
+      try {
+        onlineHandler.delete(socket.id)
+      } catch (e) {
+        console.log(e)
+      }
     })
   })
 }

@@ -13,9 +13,9 @@ const LogoutBtn = () => {
       <button className="focus:outline-none transition duration-500 ease-in-out transform hover:scale-125 cursor-pointer"
       onClick={() => {
         socket.emit('logout', user)
-        // socket.disconnect()
+        socket.disconnect()
         dispatch(logout())
-        // dispatch(resetSocket())
+        dispatch(resetSocket())
       }}>
 
         <svg

@@ -2,7 +2,7 @@ export let users = {}
 
 const onlineHandler = {
   add: (socketId, userId) => {
-    console.log(`${socketId} added, user>> ${userId}`)
+    console.log(`socket${socketId} added, user>> ${userId}`)
     return (users[socketId] = userId)
   },
   delete: (socketId) => {
@@ -14,12 +14,10 @@ const onlineHandler = {
   },
   getAllSocketsByUserId: (userId) => {
     const userSockets = Object.keys(users).reduce((arr, socket) => {
-      console.log('acc>>',   arr, 'rec>>',   socket)
       return users[socket] === userId
       ? [...arr, socket]
       : [...arr]
     },[])
-    console.log('userSockets-reduced',   userSockets)
     return userSockets
 
   },
