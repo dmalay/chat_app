@@ -43,7 +43,7 @@ const InputMessage = ({ user, currentChat }) => {
 
   return (
     <>
-      {sender.typing && sender.chatId === currentChat._id
+      {sender.typing && sender.chatId === currentChat._id && sender.fromUser._id !== user._id
       ?  
       <div className="flex italic font-light text-red-500 justify-start mx-12 transparent">
         {sender.fromUser.login} is typing...

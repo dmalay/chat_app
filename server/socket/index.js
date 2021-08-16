@@ -2,85 +2,56 @@ import { Server } from "socket.io"
 import Message from "../models/message.model"
 import { MessageModel } from "../models/message.model"
 
-const users = new Map()
-const userSockets = new Map()
+import onlineHandler, { usersOnline } from "./onlineHandler"
+
+// const users = {}
 
 const SocketIO = (server) => {
   const io = new Server(server)
 
   io.on("connection", (socket) => {
-
     //user connected
     socket.on("join", async (user) => {
-      let sockets = []
+      onlineHandler.add(socket.id, user._id)
+    })
 
-      if(users.has(user._id)) {
-        const existingUser = users.get(user._id)
-        existingUser.sockets = [...existingUser.sockets, ...[socket.id]]
-        users.set(user._id, existingUser)
-        sockets = [...existingUser.sockets, ...[socket.id]]
-        userSockets.set(socket.id, user._id)
-      } else {
-        users.set(user._id, { _id: user._id, sockets: [socket.id]})
-        userSockets.set(socket.id, user._id)
-        sockets.push[socket.id]
+    socket.on("message", async (message) => {
+      try {
+        const msg = {
+          text: message.text,
+          fromUser: message.fromUser._id,
+          name: message.fromUser.login,
+          chatID: message.chatID,
+        }
 
-        // console.log('userSocketHas>>>', userSockets.has(socket.id))
-        // console.log('UserstHas>>>', users.has(user._id))
-        // console.log(socket.id)
-        // console.log('sockets-join>>>', sockets)
+        const newMessage = await MessageModel.create(msg)
+        const sockets = onlineHandler.getAllUsers()
+        console.log(newMessage)
+        io.emit("received", newMessage)
+      } catch (e) {
+        console.log(e)
       }
     })
 
-    socket.on('message', async (message) => {
-      let sockets =[]
-      if (users.has(message.fromUser._id)) {
-        sockets = users.get(message.fromUser._id).sockets
-
-        message.toSubscribers.forEach(it => {
-          if(users.has(it._id)) {
-            sockets = [...sockets, ...users.get(it._id).sockets]
-          }
-        })
-
-        try{
-          const msg = {
-            text: message.text,
-            fromUser: message.fromUser._id,
-            name: message.fromUser.login,
-            chatID: message.chatID
-          }
-
-          const newMessage = await MessageModel.create(msg)
-          console.log(newMessage)
-          io.to(sockets).emit('received', newMessage)
-
-        } catch(e) {
-          console.log(e)
-        }
-      }
+    socket.on("typing", async (message) => {
+      socket.broadcast.emit("typing", message)
     })
 
-    socket.on('typing', async (message) => {
-      message.toSubscribers.forEach((it) => {
-        if(users.has(it._id)) {
-          users.get(it._id).sockets.forEach((socket => {
-            console.log(message)
-            io.to(socket).emit('typing', message)
-          }))
+    socket.on("logout", async (user) => {
+      const userSockets = onlineHandler.getAllSocketsByUserId(user._id)
+      userSockets.forEach((sock) => {
+        if (sock === socket.id) {
+          onlineHandler.delete(socket.id)
+        } else {
+          io.to(sock).emit("logged out", sock)
         }
-
       })
     })
 
-    //used disconnected(browser closed)
     socket.on("disconnect", async () => {
-      if (userSockets.has(socket.id)) {
-        const user = users.get(userSockets.get(socket.id))
- console.log("disconnect",user, socket.id)
-        userSockets.delete(socket.id)
-        users.delete(user._id)
-      }
+      //user disconnected(browser closed)
+      console.log
+      onlineHandler.delete(socket.id)
     })
   })
 }

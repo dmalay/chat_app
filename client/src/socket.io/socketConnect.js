@@ -1,13 +1,27 @@
 import React, { useEffect } from "react"
+import { useSelector } from "react-redux"
 import SocketIOClient from "socket.io-client"
-import { fetchChats, setSocket, receivedMessage, senderTyping } from "../redux/actions/chat.actions"
+import { fetchChats, setSocket, receivedMessage, senderTyping, resetSocket } from "../redux/actions/chat.actions"
+import {logout} from "../redux/actions/auth.actions"
 
 function useSocket(user, dispatch) {
+  const { isLoggedIn } = useSelector((s) => s.auth)
+
   useEffect(() => {
     dispatch(fetchChats())
     .then( res=> {
       const socket = SocketIOClient.connect()
       dispatch(setSocket(socket))
+      
+      
+      socket.emit("logout", user, () => {
+        socket.disconnect()
+        dispatch(resetSocket())
+      })
+      
+      socket.on("logged out", (sock) => {
+        console.log(`logged ut somewhere, ${sock}`)
+      })
       
       socket.emit("join", user)
       
@@ -31,6 +45,7 @@ function useSocket(user, dispatch) {
           
           // console.log(res)
         })
+        
   }, [dispatch])
 }
 

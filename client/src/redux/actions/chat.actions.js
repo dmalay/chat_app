@@ -9,6 +9,7 @@ import {
   SET_ERROR,
   DELETE_PRIVATE_CHAT,
   SET_SOCKET,
+  RESET_SOCKET,
   RECEIVED_MESSAGE,
   SENDER_TYPING
 } from "../types/chat.types"
@@ -114,6 +115,12 @@ export function resetAllErrors() {
 export function setSocket(socket) {
   return (dispatch) => {
     dispatch({ type: SET_SOCKET, socket })
+  }
+}
+
+export function resetSocket() {
+  return (dispatch) => {
+    dispatch({ type: RESET_SOCKET })
   }
 }
 

@@ -7,6 +7,7 @@ import {
   SET_ERROR,
   DELETE_PRIVATE_CHAT,
   SET_SOCKET,
+  RESET_SOCKET,
   RECEIVED_MESSAGE,
   SENDER_TYPING
 } from "../types/chat.types"
@@ -74,12 +75,21 @@ export default (state = initialState, action) => {
         socket,
       }
     }
+    case RESET_SOCKET: {
+      return {
+        ...state,
+        socket:{},
+        actualChat:{},
+        chats:[],
+        scrollBottom:0
+      }
+    }
     case RECEIVED_MESSAGE: {
       const { message, actualChat } = action
       return {
         ...state,
         message,
-        actualChat,
+        actualChat: actualChat,
         sender: { typing: false}
       }
     }
