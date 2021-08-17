@@ -19,15 +19,19 @@ const onlineHandler = {
     return userSockets
   },
 
-  getAllUsers: () => {
+  getAll: () => {
     const list = Object.keys(users).reduce((list, socket) => {
       return { ...list, [users[socket]]: socket }
     }, {})
     return list
   },
 
-  getAllSockets: () => {
+  getAllUsers: () => {
     return Object.values(users)
+  },
+  
+  getAllSockets: () => {
+    return Object.keys(users)
   }
 }
 

@@ -11,6 +11,7 @@ import {
   RECEIVED_MESSAGE,
   SENDER_TYPING,
   STATUS_ONLINE,
+  STATUS_OFFLINE,
 } from "../types/chat.types"
 
 const initialState = {
@@ -103,6 +104,13 @@ export default (state = initialState, action) => {
       }
     }
     case STATUS_ONLINE: {
+      const { online } = action
+      return {
+        ...state,
+        online,
+      }
+    }
+    case STATUS_OFFLINE: {
       const { online } = action
       return {
         ...state,

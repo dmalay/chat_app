@@ -12,7 +12,8 @@ import {
   RESET_SOCKET,
   RECEIVED_MESSAGE,
   SENDER_TYPING,
-  STATUS_ONLINE
+  STATUS_ONLINE,
+  STATUS_OFFLINE
 } from "../types/chat.types"
 
 export function fetchChats() {
@@ -173,5 +174,13 @@ export function deleteChat(chatId) {
 export function setOnline(users) {
   return (dispatch) => {
     dispatch({ type: STATUS_ONLINE, online: users })
+  }
+}
+
+export function setOffline(userId) {
+  return (dispatch, getState) => {
+    const { online } = getState().chat
+    const newList = online.filter((id) => id !== userId)
+    dispatch({ type: STATUS_OFFLINE, online: newList })
   }
 }
