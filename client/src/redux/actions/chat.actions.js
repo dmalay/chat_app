@@ -11,7 +11,8 @@ import {
   SET_SOCKET,
   RESET_SOCKET,
   RECEIVED_MESSAGE,
-  SENDER_TYPING
+  SENDER_TYPING,
+  STATUS_ONLINE
 } from "../types/chat.types"
 
 export function fetchChats() {
@@ -19,6 +20,16 @@ export function fetchChats() {
     return chatService
       .fetchChats()
       .then((data) => {
+        // data.chats.forEach((chat)=> {
+        //   chat.subscribers.forEach((it) => { 
+        //     it.status = "offline"
+        //   })
+        // })
+        
+        // data.actualChat.subscribers.forEach((it) => {
+        //   it.status = "offline"
+        // })
+
         dispatch({
           type: FETCH_CHATS,
           chats: data.chats,
@@ -156,5 +167,11 @@ export function deleteChat(chatId) {
     .catch((err) => {
       throw err
     })
+  }
+}
+
+export function setOnline(users) {
+  return (dispatch) => {
+    dispatch({ type: STATUS_ONLINE, online: users })
   }
 }

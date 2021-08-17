@@ -1,9 +1,15 @@
 import React, { useState } from "react"
+import { useSelector } from "react-redux"
 
 import ModalUserlist from "../../modals/modal-userlist"
 
 const UserListBtn = () => {
+  const { actualChat, online } = useSelector((s) => s.chat)
   const [modal, setModal] = useState(false)
+
+  const number = actualChat?.subscribers?.reduce((acc, rec) => {
+    return online.includes(rec._id) ? acc + 1 : acc
+  }, 0)
 
   return (
     <div
@@ -27,7 +33,7 @@ const UserListBtn = () => {
         <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
       </svg>
-      <span className="text-2xl mx-2">1</span>
+      <span className="text-2xl mx-2">{number}</span>
       {modal && (
         <ModalUserlist
           click={() => setModal(false)}

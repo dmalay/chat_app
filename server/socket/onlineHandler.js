@@ -14,12 +14,9 @@ const onlineHandler = {
   },
   getAllSocketsByUserId: (userId) => {
     const userSockets = Object.keys(users).reduce((arr, socket) => {
-      return users[socket] === userId
-      ? [...arr, socket]
-      : [...arr]
-    },[])
+      return users[socket] === userId ? [...arr, socket] : [...arr]
+    }, [])
     return userSockets
-
   },
 
   getAllUsers: () => {
@@ -28,6 +25,10 @@ const onlineHandler = {
     }, {})
     return list
   },
+
+  getAllSockets: () => {
+    return Object.values(users)
+  }
 }
 
 export default onlineHandler

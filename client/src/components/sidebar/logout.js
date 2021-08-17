@@ -1,23 +1,24 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from "react"
+import { useDispatch, useSelector } from "react-redux"
 
-import { logout } from '../../redux/actions/auth.actions'
-import {resetSocket } from '../../redux/actions/chat.actions'
+import { logout } from "../../redux/actions/auth.actions"
+import { resetSocket } from "../../redux/actions/chat.actions"
+import socketService from "../../socket.io/socketService"
 
 const LogoutBtn = () => {
   const { socket } = useSelector((s) => s.chat)
   const { user } = useSelector((s) => s.auth)
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
   return (
     <div className="flex px-6 mr-2 ">
-      <button className="focus:outline-none transition duration-500 ease-in-out transform hover:scale-125 cursor-pointer"
-      onClick={() => {
-        socket.emit('logout', user)
-        socket.disconnect()
-        dispatch(logout())
-        dispatch(resetSocket())
-      }}>
-
+      <button
+        className="focus:outline-none transition duration-500 ease-in-out transform hover:scale-125 cursor-pointer"
+        onClick={() => {
+          socketService.logout(socket, user)
+          dispatch(logout())
+          dispatch(resetSocket())
+        }}
+      >
         <svg
           className="h-8 w-8 fill-current text-purple-100"
           x="0px"

@@ -9,7 +9,8 @@ import {
   SET_SOCKET,
   RESET_SOCKET,
   RECEIVED_MESSAGE,
-  SENDER_TYPING
+  SENDER_TYPING,
+  STATUS_ONLINE,
 } from "../types/chat.types"
 
 const initialState = {
@@ -19,7 +20,8 @@ const initialState = {
   actualChat: {},
   errors: {},
   socket: {},
-  sender: { typing: false }
+  sender: { typing: false },
+  online: [],
 }
 
 export default (state = initialState, action) => {
@@ -37,7 +39,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         actualChat,
-        scrollBottom
+        scrollBottom,
       }
     }
     case JOIN_CHAT: {
@@ -78,10 +80,10 @@ export default (state = initialState, action) => {
     case RESET_SOCKET: {
       return {
         ...state,
-        socket:{},
-        actualChat:{},
-        chats:[],
-        scrollBottom:0
+        socket: {},
+        actualChat: {},
+        chats: [],
+        scrollBottom: 0,
       }
     }
     case RECEIVED_MESSAGE: {
@@ -90,22 +92,29 @@ export default (state = initialState, action) => {
         ...state,
         message,
         actualChat: actualChat,
-        sender: { typing: false}
+        sender: { typing: false },
       }
     }
-      case SENDER_TYPING: {
-        const { sender } = action
-        return {
-          ...state,
-          sender
-        }
+    case SENDER_TYPING: {
+      const { sender } = action
+      return {
+        ...state,
+        sender,
       }
+    }
+    case STATUS_ONLINE: {
+      const { online } = action
+      return {
+        ...state,
+        online,
+      }
+    }
 
     case DELETE_PRIVATE_CHAT: {
       const { chats } = action
       return {
         ...state,
-        chats
+        chats,
       }
     }
 

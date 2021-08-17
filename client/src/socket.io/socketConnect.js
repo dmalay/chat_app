@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import SocketIOClient from "socket.io-client"
-import { fetchChats, setSocket, receivedMessage, senderTyping, resetSocket } from "../redux/actions/chat.actions"
+import { fetchChats, setSocket, receivedMessage, senderTyping, resetSocket, setOnline } from "../redux/actions/chat.actions"
 import { logout } from "../redux/actions/auth.actions"
 
 function useSocket(user, dispatch) {
@@ -11,6 +11,7 @@ function useSocket(user, dispatch) {
       const socket = SocketIOClient.connect()
       dispatch(setSocket(socket))
       
+      socket.emit("join", user)
       
       socket.on("logged out", () => {
         console.log(`logged out somewhere`)
@@ -19,7 +20,6 @@ function useSocket(user, dispatch) {
             dispatch(resetSocket())        
       })
       
-      socket.emit("join", user)
       
       socket.on("received", (message) => {
         console.log("received:", message, user._id)
@@ -30,10 +30,12 @@ function useSocket(user, dispatch) {
         console.log('typing:', sender)
         dispatch(senderTyping(sender))
       })
-      
-      // socket.on('online', (it) =>{
-        //     console.log('event:', it)
-        // })
+
+            
+      socket.on('online', (online) =>{
+            console.log('online', online)
+            dispatch(setOnline(online))
+        })
         
         // socket.on('offline', (it) =>{
           //     console.log('event:', it)

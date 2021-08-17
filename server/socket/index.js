@@ -1,7 +1,7 @@
 import { Server } from "socket.io"
 import { MessageModel } from "../models/message.model"
 
-import onlineHandler, { usersOnline } from "./onlineHandler"
+import onlineHandler from "./onlineHandler"
 
 const SocketIO = (server) => {
   const io = new Server(server)
@@ -10,7 +10,11 @@ const SocketIO = (server) => {
     //user connected
     socket.on("join", async (user) => {
       try {
+
         onlineHandler.add(socket.id, user._id)
+        const usersOnline = onlineHandler.getAllSockets()
+        io.emit('online', usersOnline)
+        
       } catch (e) {
         console.log(e)
       }

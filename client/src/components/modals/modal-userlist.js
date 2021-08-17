@@ -6,7 +6,7 @@ import PopupForDirect from "./popup-DM"
 
 const ModalUserlist = (props) => {
   const { modal, setModal } = props
-  const { actualChat, chats } = useSelector((s) => s.chat)
+  const { actualChat, chats, online } = useSelector((s) => s.chat)
   const { _id, login } = useSelector((s) => s.auth.user)
   const [popup, setPopup] = useState(false)
   const [userForDm, setUserForDm] = useState({})
@@ -76,6 +76,7 @@ const ModalUserlist = (props) => {
                   setPopup={setPopup}
                   setUserForDm={setUserForDm}
                   authId={_id}
+                  isOnline={online.includes(user._id)}
                 />
               )
             })}

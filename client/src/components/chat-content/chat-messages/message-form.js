@@ -1,6 +1,6 @@
 import React from "react"
 
-const MessageForm = ({ text, name, fromUser, time, isUserCurrent, popup, setPopup, setUserForDm }) => {
+const MessageForm = ({ text, name, fromUser, time, isUserCurrent, popup, setPopup, setUserForDm, isOnline }) => {
   return (
     <>
       {" "}
@@ -21,7 +21,11 @@ const MessageForm = ({ text, name, fromUser, time, isUserCurrent, popup, setPopu
       ) : (
         <div className="flex py-1">
           <div className="flex flex-col border border-gray-500 rounded-xl px-8 shadow bg-white items-start">
-            <div className="flex items-start">
+            <div className="flex items-center">
+            <span className={`block w-2 h-2 mr-2  rounded-full ${isOnline
+                    ?  "bg-green-500 "
+                    : "bg-red-500 "
+                    }`}></span>
               <span
               className="font-bold mr-2 text-purple-800 font-sans cursor-pointer
                         transition duration-500 ease-in-out transform hover:scale-125"

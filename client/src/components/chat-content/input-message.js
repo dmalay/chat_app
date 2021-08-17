@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { useSelector } from "react-redux"
+import socketService from "../../socket.io/socketService"
 
 const InputMessage = ({ user, currentChat }) => {
   const { socket, sender } = useSelector((s) => s.chat)
@@ -15,7 +16,7 @@ const InputMessage = ({ user, currentChat }) => {
       }
       if (e.key === "Enter" || e.type === "click") {
         setMessage("")
-        socket.emit("message", msg)
+        socketService.sendMessage(socket, msg)
       }
     }
   }
@@ -29,14 +30,13 @@ const InputMessage = ({ user, currentChat }) => {
       fromUser: user,
       toSubscribers: currentChat.subscribers
     }
-    console.log('receiver>', receiver)
     if(value.length === 1) {  //prevent emiting on every keystroke, first letter is enough to inform of 'typing..'
       receiver.typing = true
-      socket.emit('typing', receiver)
+      socketService.isTyping(socket, receiver)
     }
     if(value.length === 0) {
       receiver.typing = false
-      socket.emit('typing', receiver)
+      socketService.isTyping(socket, receiver)
     }
 
   }

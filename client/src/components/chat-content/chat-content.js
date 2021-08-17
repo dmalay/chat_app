@@ -7,7 +7,7 @@ import InputMessage from './input-message'
 
 const ChatContent = () => {
   const { user } = useSelector((s) => s.auth)
-  const { socket, chats, actualChat } = useSelector((s) => s.chat)
+  const { chats, actualChat } = useSelector((s) => s.chat)
 
   const currentChat = chats.find((it) => it._id === user.defaultChatID)
 

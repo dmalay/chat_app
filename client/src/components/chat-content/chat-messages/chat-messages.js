@@ -7,7 +7,7 @@ import PopupForDirect from "../../modals/popup-DM"
 
 const ChatMessages = ({ actualChat, currentChat, user }) => {
   const { messages } = actualChat
-  const { scrollBottom, chats } = useSelector((s) => s.chat)
+  const { scrollBottom, chats, online } = useSelector((s) => s.chat)
 
   const chatBox = useRef()
   const [popup, setPopup] = useState(false)
@@ -76,6 +76,7 @@ const ChatMessages = ({ actualChat, currentChat, user }) => {
                   popup={popup}
                   setPopup={setPopup}
                   setUserForDm={setUserForDm}
+                  isOnline={online.includes(it.fromUser)}
                 />
               )
             })
