@@ -3,6 +3,7 @@ import { useSelector } from "react-redux"
 
 import UserlistForm from "./modal-components.js/userlist-form"
 import PopupForDirect from "./popup-DM"
+import { findActivePvtChats, findActivePvtDMs } from "../../helpers/helpers"
 
 const ModalUserlist = (props) => {
   const { modal, setModal } = props
@@ -18,24 +19,6 @@ const ModalUserlist = (props) => {
       return props.click()
     }
   }
-
-  const activePvtChats = chats.filter(((it) =>{
-    const subscribed = Boolean(it.subscribers.find((it) => it._id === _id))
-    return it.type === 'private' && subscribed
-  } ))
-
-  const activePvtDMs = chats.reduce((acc, rec) => {
-    if (rec.type === "private") {
-      if (rec.subscribers[0]._id === _id) {
-        return [...acc, rec.subscribers[1]._id ]
-      }
-      if (rec.subscribers[1]._id === _id) {
-       return [...acc, rec.subscribers[0]._id]
-      }
-      return acc
-    }
-  return acc
-  }, [])
 
   return (
     <div
@@ -61,8 +44,8 @@ const ModalUserlist = (props) => {
               actualChatType={actualChat.type}
               actualChatId={actualChat._id}
               genChatId={genChat._id}
-              activePvtChats={activePvtChats}
-              activePvtDMs={activePvtDMs}
+              activePvtChats={findActivePvtChats(chats, _id)}
+              activePvtDMs={findActivePvtDMs(chats, _id)}
             />
           )}
 

@@ -13,7 +13,8 @@ import {
   RECEIVED_MESSAGE,
   SENDER_TYPING,
   STATUS_ONLINE,
-  STATUS_OFFLINE
+  STATUS_OFFLINE,
+  PAGINATED_MESSAGES
 } from "../types/chat.types"
 
 export function fetchChats() {
@@ -138,14 +139,16 @@ export function resetSocket() {
 
 export function receivedMessage(message, userID) {
   return (dispatch, getState) => {
-    const { actualChat } = getState().chat
+    const { actualChat, scrollBottom } = getState().chat
+    let newScrollBottom = scrollBottom
     if (actualChat._id === message.chatID) {
+      newScrollBottom += 1
       const chatCopy = {
         ...actualChat,
         messages: [...actualChat.messages, ...[message]],
       }
 
-      dispatch({ type: RECEIVED_MESSAGE, message, actualChat: chatCopy })
+      dispatch({ type: RECEIVED_MESSAGE, message, actualChat: chatCopy, scrollBottom: newScrollBottom })
     }
   }
 }
@@ -182,5 +185,19 @@ export function setOffline(userId) {
     const { online } = getState().chat
     const newList = online.filter((id) => id !== userId)
     dispatch({ type: STATUS_OFFLINE, online: newList })
+  }
+}
+
+export function paginateMessages (data) {
+  return (dispatch, getState) => {
+    chatService
+    .paginateMessages(data)
+    .then((data) => {
+      console.log(data)
+      const { actualChat } = getState().chat
+      const newChat = actualChat
+
+      dispatch({ type: PAGINATED_MESSAGES, messages, actualChat: newChat})
+    })
   }
 }

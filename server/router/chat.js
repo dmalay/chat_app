@@ -6,13 +6,15 @@ import {
   joinController,
   quitController,
   createController,
-  deleteController
+  deleteController,
+  messagesController
 } from "../controllers/chat.controller.js"
 import authMiddleware from "../middleware/auth"
 
 const chatRouter = Router()
 
 chatRouter.get("/", authMiddleware, fetchController)
+chatRouter.get('/messages', authMiddleware, messagesController)
 chatRouter.get('/current:chatId', authMiddleware, getController)
 chatRouter.post("/join", authMiddleware, joinController)
 chatRouter.post("/quit", authMiddleware, quitController)

@@ -12,6 +12,7 @@ import {
   SENDER_TYPING,
   STATUS_ONLINE,
   STATUS_OFFLINE,
+  PAGINATED_MESSAGES
 } from "../types/chat.types"
 
 const initialState = {
@@ -88,12 +89,13 @@ export default (state = initialState, action) => {
       }
     }
     case RECEIVED_MESSAGE: {
-      const { message, actualChat } = action
+      const { message, actualChat, scrollBottom } = action
       return {
         ...state,
         message,
         actualChat: actualChat,
         sender: { typing: false },
+        scrollBottom
       }
     }
     case SENDER_TYPING: {
@@ -123,6 +125,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         chats,
+      }
+    }
+
+    case PAGINATED_MESSAGES: {
+      const { actualChat, messages } = action
+      return {
+        ...state,
+        actualChat,
+        messages
       }
     }
 

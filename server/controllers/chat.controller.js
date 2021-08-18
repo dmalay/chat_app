@@ -1,6 +1,6 @@
 import User from "../models/user.model"
 import Chat from "../models/chat.model"
-import Message, { MessageModel } from "../models/message.model"
+import  { MessageModel } from "../models/message.model"
 
 export const fetchController = async (req, res) => {
   try {
@@ -73,7 +73,6 @@ export const createController = async (req, res) => {
           })
         : await Chat.exists({ name })
 
-    console.log(chatExists)
     if (chatExists) {
       return res.status(400).json({ message: "chat already exists" })
     }
@@ -87,7 +86,6 @@ export const createController = async (req, res) => {
     const chats = await Chat.find({})
       .populate("subscribers", ["login", "type"])
       .exec()
-    console.log(chat.name, chat)
     return res.status(200).json({ message: "new chat created", chats })
   } catch (e) {
     return res.status(500).json({ error: e.message })
@@ -114,6 +112,36 @@ export const deleteController = async (req, res) => {
     return res
       .status(200)
       .json({ message: "private chat and messages successfully deleted" })
+  } catch (e) {
+    return res.status(500).json({ error: e.message })
+  }
+}
+
+export const messagesController = async (req, res) => {
+  try {
+    const { chatId } = req.query
+    const limit = 20
+    const { page } = req.query || 1
+    const skip = page > 1 ? page * limit : 0
+
+    const msgNumber = await MessageModel.countDocuments({ chatID:actualChat._id })
+    const messages = await MessageModel.find( { chatID:actualChat._id}, null,  
+      { sort: { 'createdAt': -1 } , limit: limit,  skip: skip}  )
+    
+    const totalPages = Math.ceil(msgNumber / limit)
+
+    if(page > totalPages) {
+      return res.status(200).json({ message: "no paginated messages",  messages:[]})
+    }
+    const response = {
+      messages: messages,
+      pagination: {
+        page,
+        totalPages
+      }
+    }
+    return res.status(200).json({ message: "paginated messages", response })
+
   } catch (e) {
     return res.status(500).json({ error: e.message })
   }

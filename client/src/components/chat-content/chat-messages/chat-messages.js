@@ -4,6 +4,7 @@ import { useSelector } from "react-redux"
 import MessageForm from "./message-form"
 import localtimeConverter from "../../../helpers/localtimeConverter"
 import PopupForDirect from "../../modals/popup-DM"
+import { findActivePvtChats, findActivePvtDMs } from "../../../helpers/helpers"
 
 const ChatMessages = ({ actualChat, currentChat, user }) => {
   const { messages } = actualChat
@@ -12,6 +13,8 @@ const ChatMessages = ({ actualChat, currentChat, user }) => {
   const chatBox = useRef()
   const [popup, setPopup] = useState(false)
   const [userForDm, setUserForDm] = useState({})
+  const [loading, setLoading] = useState(false)
+
   const genChat = chats.find((it) => it.name === "general")
 
   useEffect(() => {
@@ -24,27 +27,18 @@ const ChatMessages = ({ actualChat, currentChat, user }) => {
     chatBox.current.scrollTop = value
   }
 
-  const activePvtChats = chats.filter((it) => {
-    const subscribed = Boolean(it.subscribers.find((it) => it._id === user._id))
-    return it.type === "private" && subscribed
-  })
 
-  const activePvtDMs = chats.reduce((acc, rec) => {
-    if (rec.type === "private") {
-      if (rec.subscribers[0]._id === user._id) {
-        return [...acc, rec.subscribers[1]._id]
-      }
-      if (rec.subscribers[1]._id === user._id) {
-        return [...acc, rec.subscribers[0]._id]
-      }
-      return acc
+  const handleInfiniteScroll = (e) => {
+    if (e.target.scrollTop === 0) {
+      setLoading(true)
+      
     }
-    return acc
-  }, [])
+  }
 
   return (
     <>
       <div
+      onScroll={handleInfiniteScroll}
         ref={chatBox}
         className="px-6 py-4 flex-1 flex-auto overflow-scroll-x overflow-y-auto bg-indigo-100"
       >
@@ -58,8 +52,8 @@ const ChatMessages = ({ actualChat, currentChat, user }) => {
             actualChatType={actualChat.type}
             actualChatId={actualChat._id}
             genChatId={genChat._id}
-            activePvtChats={activePvtChats}
-            activePvtDMs={activePvtDMs}
+            activePvtChats={findActivePvtChats(chats, user._id)}
+            activePvtDMs={findActivePvtDMs(chats, user._id)}
           />
         )}
 
