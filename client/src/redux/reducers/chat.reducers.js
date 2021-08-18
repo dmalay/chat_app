@@ -18,6 +18,7 @@ import {
 const initialState = {
   message: {},
   scrollBottom: 0,
+  scrollUp: 0,
   chats: [],
   actualChat: {},
   errors: {},
@@ -129,11 +130,11 @@ export default (state = initialState, action) => {
     }
 
     case PAGINATED_MESSAGES: {
-      const { actualChat, messages } = action
+      const { actualChat, scrollUp } = action
       return {
         ...state,
         actualChat,
-        messages
+        scrollUp
       }
     }
 

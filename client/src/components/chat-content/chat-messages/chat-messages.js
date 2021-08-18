@@ -10,14 +10,22 @@ import { paginateMessages } from "../../../redux/actions/chat.actions"
 const ChatMessages = ({ actualChat, currentChat, user }) => {
   const dispatch = useDispatch()
   const { messages, _id,  pagination } = actualChat
-  const { scrollBottom, chats, online } = useSelector((s) => s.chat)
+  const { scrollBottom, scrollUp, chats, online } = useSelector((s) => s.chat)
 
   const chatBox = useRef()
   const [popup, setPopup] = useState(false)
   const [userForDm, setUserForDm] = useState({})
   const [loading, setLoading] = useState(false)
 
+  console.log('>>',messages?.length, scrollUp, '..scrollBottom>>', scrollBottom, pagination?.page)
   const genChat = chats.find((it) => it.name === "general")
+
+  useEffect(() => {
+    setTimeout(() => {
+      scrollManual(Math.ceil (chatBox.current.scrollHeight * 20/messages?.length) )
+    }, 100)
+  }, [scrollUp])
+
 
   useEffect(() => {
     setTimeout(() => {

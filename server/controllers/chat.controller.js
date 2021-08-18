@@ -160,7 +160,7 @@ export const messagesController = async (req, res) => {
     }
     const pagination = { page, totalPages }
 
-    return res.status(200).json({ message: "paginated messages", messages, pagination })
+    return res.status(200).json({ message: "paginated messages", messages, pagination, chatId })
   } catch (e) {
     return res.status(500).json({ error: e.message })
   }

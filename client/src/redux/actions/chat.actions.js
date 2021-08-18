@@ -23,7 +23,10 @@ export function fetchChats() {
       .fetchChats()
       .then((data) => {
         data.actualChat.messages.reverse()
-
+        return data
+      })
+      .then((data) => {
+console.log(data)
         dispatch({
           type: FETCH_CHATS,
           chats: data.chats,
@@ -40,6 +43,10 @@ export function changeActualChat(chatId) {
   return (dispatch, getState) => {
     chatService
       .changeActualChat(chatId)
+      .then((data) => {
+        data.actualChat.messages.reverse()
+        return data
+      })
       .then((data) => {
         const { scrollBottom } = getState().chat
         const newScrollBottom = scrollBottom + 1
@@ -191,19 +198,28 @@ export function setOffline(userId) {
 
 export function paginateMessages(chatId, page) {
   return (dispatch, getState) => {
-    chatService.paginateMessages(chatId, page).then((data) => {
-      const { messages, pagination } = data
-      const { actualChat } = getState().chat
-      if (messages?.length) {
-        messages.reverse()
-      }
-      const chatCopy = {
-        ...actualChat,
-        pagination,
-        messages: [...messages, ...actualChat.messages],
-      }
+    chatService.paginateMessages(chatId, page)
+    .then((data) => {
+      const { messages, pagination, chatId } = data
+      const { actualChat, scrollUp } = getState().chat
 
-      dispatch({ type: PAGINATED_MESSAGES, actualChat: chatCopy })
+      if( actualChat._id === chatId && messages?.length) {
+
+        let newScrollUp = scrollUp
+        if (messages?.length) {
+          messages.reverse()
+          newScrollUp += 1
+        }
+        const chatCopy = {
+          ...actualChat,
+          pagination,
+          messages: [...messages, ...actualChat.messages],
+        }
+        
+        dispatch({ type: PAGINATED_MESSAGES, actualChat: chatCopy, scrollUp: newScrollUp })
+      } else {
+        dispatch({ type: PAGINATED_MESSAGES, actualChat, scrollUp })
+      }
     })
   }
 }
