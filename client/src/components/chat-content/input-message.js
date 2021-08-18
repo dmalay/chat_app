@@ -24,7 +24,6 @@ const InputMessage = ({ user, currentChat }) => {
   const handleMessage = (e) => {
     const value = e.target.value
     setMessage(value)
-
     const receiver = {
       chatId: currentChat._id,
       fromUser: user,
@@ -38,7 +37,6 @@ const InputMessage = ({ user, currentChat }) => {
       receiver.typing = false
       socketService.isTyping(socket, receiver)
     }
-
   }
 
   return (

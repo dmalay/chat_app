@@ -15,9 +15,6 @@ const ChatMessages = ({ actualChat, currentChat, user }) => {
   const chatBox = useRef()
   const [popup, setPopup] = useState(false)
   const [userForDm, setUserForDm] = useState({})
-  const [loading, setLoading] = useState(false)
-
-  console.log('>>',messages?.length, scrollUp, '..scrollBottom>>', scrollBottom, pagination?.page)
   const genChat = chats.find((it) => it.name === "general")
 
   useEffect(() => {
@@ -40,7 +37,6 @@ const ChatMessages = ({ actualChat, currentChat, user }) => {
 
   const handleInfiniteScroll = (e) => {
     if (e.target.scrollTop === 0) {
-      setLoading(true)
       const page = pagination?.page ? pagination.page : 0
       dispatch(paginateMessages(_id, parseInt(page) + 1))
     }

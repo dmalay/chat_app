@@ -7,7 +7,7 @@ import { setDefaultChat } from "../../../redux/actions/auth.actions"
 import { changeActualChat } from "../../../redux/actions/chat.actions"
 
 const Channels = () => {
-  const { chats } = useSelector((s) => s.chat)
+  const { chats, unreadMessages } = useSelector((s) => s.chat)
   const { _id, defaultChatID } = useSelector((s) => s.auth.user)
 
   return (
@@ -22,6 +22,7 @@ const Channels = () => {
               _id={it._id}
               setNewChat={[setDefaultChat, changeActualChat]}
               isChatCurrent={it._id === defaultChatID}
+              hasUnreadMsg={unreadMessages[it._id]}
             />
           )
         }

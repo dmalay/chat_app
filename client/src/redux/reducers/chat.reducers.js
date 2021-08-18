@@ -9,6 +9,7 @@ import {
   SET_SOCKET,
   RESET_SOCKET,
   RECEIVED_MESSAGE,
+  MESSAGE_READ,
   SENDER_TYPING,
   STATUS_ONLINE,
   STATUS_OFFLINE,
@@ -16,7 +17,7 @@ import {
 } from "../types/chat.types"
 
 const initialState = {
-  message: {},
+  unreadMessages: {},
   scrollBottom: 0,
   scrollUp: 0,
   chats: [],
@@ -90,13 +91,20 @@ export default (state = initialState, action) => {
       }
     }
     case RECEIVED_MESSAGE: {
-      const { message, actualChat, scrollBottom } = action
+      const { unreadMessages, actualChat, scrollBottom } = action
       return {
         ...state,
-        message,
+        unreadMessages,
         actualChat: actualChat,
         sender: { typing: false },
         scrollBottom
+      }
+    }
+    case MESSAGE_READ: {
+      const { unreadMessages } = action
+      return {
+        ...state,
+        unreadMessages,
       }
     }
     case SENDER_TYPING: {

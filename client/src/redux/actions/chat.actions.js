@@ -11,6 +11,7 @@ import {
   SET_SOCKET,
   RESET_SOCKET,
   RECEIVED_MESSAGE,
+  MESSAGE_READ,
   SENDER_TYPING,
   STATUS_ONLINE,
   STATUS_OFFLINE,
@@ -26,7 +27,6 @@ export function fetchChats() {
         return data
       })
       .then((data) => {
-console.log(data)
         dispatch({
           type: FETCH_CHATS,
           chats: data.chats,
@@ -142,7 +142,7 @@ export function resetSocket() {
 
 export function receivedMessage(message, userID) {
   return (dispatch, getState) => {
-    const { actualChat, scrollBottom } = getState().chat
+    const { actualChat, scrollBottom, unreadMessages } = getState().chat
     let newScrollBottom = scrollBottom
     if (actualChat._id === message.chatID) {
       newScrollBottom += 1
@@ -150,12 +150,19 @@ export function receivedMessage(message, userID) {
         ...actualChat,
         messages: [...actualChat.messages, ...[message]],
       }
-
       dispatch({
         type: RECEIVED_MESSAGE,
         message,
         actualChat: chatCopy,
         scrollBottom: newScrollBottom,
+        unreadMessages,
+      })
+    } else {
+      dispatch({
+        type: RECEIVED_MESSAGE,
+        actualChat,
+        scrollBottom,
+        unreadMessages: { ...unreadMessages, ...{ [message.chatID]: true } },
       })
     }
   }
@@ -198,13 +205,10 @@ export function setOffline(userId) {
 
 export function paginateMessages(chatId, page) {
   return (dispatch, getState) => {
-    chatService.paginateMessages(chatId, page)
-    .then((data) => {
+    chatService.paginateMessages(chatId, page).then((data) => {
       const { messages, pagination, chatId } = data
       const { actualChat, scrollUp } = getState().chat
-
-      if( actualChat._id === chatId && messages?.length) {
-
+      if (actualChat._id === chatId && messages?.length) {
         let newScrollUp = scrollUp
         if (messages?.length) {
           messages.reverse()
@@ -215,11 +219,24 @@ export function paginateMessages(chatId, page) {
           pagination,
           messages: [...messages, ...actualChat.messages],
         }
-        
-        dispatch({ type: PAGINATED_MESSAGES, actualChat: chatCopy, scrollUp: newScrollUp })
+        dispatch({
+          type: PAGINATED_MESSAGES,
+          actualChat: chatCopy,
+          scrollUp: newScrollUp,
+        })
       } else {
         dispatch({ type: PAGINATED_MESSAGES, actualChat, scrollUp })
       }
+    })
+  }
+}
+
+export function messageRead(chatId) {
+  return (dispatch, getState) => {
+    const { unreadMessages } = getState().chat
+    dispatch({
+      type: MESSAGE_READ,
+      unreadMessages: { ...unreadMessages, ...{ [chatId]: false } },
     })
   }
 }

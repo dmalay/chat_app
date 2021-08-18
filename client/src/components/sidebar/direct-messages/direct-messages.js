@@ -8,7 +8,7 @@ import { changeActualChat } from "../../../redux/actions/chat.actions"
 
 const DirectMessages = () => {
   const { _id, defaultChatID } = useSelector((s) => s.auth.user)
-  const { chats, online } = useSelector((s) => s.chat)
+  const { chats, online, unreadMessages } = useSelector((s) => s.chat)
   const actualChatId =useSelector((s) => s.chat.actualChat._id)
 
   return (
@@ -25,6 +25,7 @@ const DirectMessages = () => {
               setNewChat={[setDefaultChat, changeActualChat]}
               isChatCurrent={chat._id === actualChatId}
               online={online}
+              hasUnreadMsg={unreadMessages[chat._id]}
             />
           )
         }

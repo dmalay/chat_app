@@ -8,12 +8,18 @@ import LogoutBtn from "./logout"
 
 const Sidebar = () => {
   const { user } = useSelector((s) => s.auth)
+  const { unreadMessages } = useSelector((s) => s.chat)
+  const hasUnread = Object.values(unreadMessages)?.reduce((acc, rec) => acc || rec, false)
+
   return (
     <div className="relative md:w-1/3 lg:w-1/4 xl:w-1/5 h-screen bg-purple-900 text-purple-300  pb-6 hidden md:block">
       <h1 className="flex justify-between text-white text-2xl my-6 px-6">
         <span>chat.io</span>
         <svg
-          className="h-6 w-6 mt-1 text-purple-100 fill-current"
+          className={`h-6 w-6 mt-1 fill-current ${hasUnread
+          ? "text-yellow-100 stroke-current stroke-2 animate-bounce"
+          : "text-purple-100"
+          }`}
           viewBox="0 0 32 32"
         >
           <g id="surface1">
@@ -26,9 +32,8 @@ const Sidebar = () => {
           <span className="bg-green-500 rounded-full block w-2 h-2 mr-2"></span>
           <span className="text-indigo-100">{user.login}</span>
         </div>
-          <LogoutBtn />
+        <LogoutBtn />
       </div>
-
       <ChannelsBtn />
       <Channels />
       <div className="px-4 mb-3 font-sans">Direct Messages</div>
