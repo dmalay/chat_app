@@ -14,7 +14,7 @@ import {
   SENDER_TYPING,
   STATUS_ONLINE,
   STATUS_OFFLINE,
-  PAGINATED_MESSAGES
+  PAGINATED_MESSAGES,
 } from "../types/chat.types"
 
 export function fetchChats() {
@@ -22,15 +22,7 @@ export function fetchChats() {
     return chatService
       .fetchChats()
       .then((data) => {
-        // data.chats.forEach((chat)=> {
-        //   chat.subscribers.forEach((it) => { 
-        //     it.status = "offline"
-        //   })
-        // })
-        
-        // data.actualChat.subscribers.forEach((it) => {
-        //   it.status = "offline"
-        // })
+        data.actualChat.messages.reverse()
 
         dispatch({
           type: FETCH_CHATS,
@@ -52,7 +44,11 @@ export function changeActualChat(chatId) {
         const { scrollBottom } = getState().chat
         const newScrollBottom = scrollBottom + 1
         console.log(newScrollBottom)
-        dispatch({ type: CHANGE_ACTUAL_CHAT, actualChat: data.actualChat, scrollBottom: newScrollBottom })
+        dispatch({
+          type: CHANGE_ACTUAL_CHAT,
+          actualChat: data.actualChat,
+          scrollBottom: newScrollBottom,
+        })
       })
       .catch((err) => {
         throw err
@@ -148,7 +144,12 @@ export function receivedMessage(message, userID) {
         messages: [...actualChat.messages, ...[message]],
       }
 
-      dispatch({ type: RECEIVED_MESSAGE, message, actualChat: chatCopy, scrollBottom: newScrollBottom })
+      dispatch({
+        type: RECEIVED_MESSAGE,
+        message,
+        actualChat: chatCopy,
+        scrollBottom: newScrollBottom,
+      })
     }
   }
 }
@@ -161,16 +162,16 @@ export function senderTyping(sender) {
 
 export function deleteChat(chatId) {
   return (dispatch, getState) => {
-    const { chats } =getState().chat  
+    const { chats } = getState().chat
     chatService
-    .deleteChat(chatId)
-    .then((data) => {
-      const newChats = chats.filter(chat => chat._id !== chatId)
-      dispatch({ type: DELETE_PRIVATE_CHAT, chats: newChats })
-    })
-    .catch((err) => {
-      throw err
-    })
+      .deleteChat(chatId)
+      .then((data) => {
+        const newChats = chats.filter((chat) => chat._id !== chatId)
+        dispatch({ type: DELETE_PRIVATE_CHAT, chats: newChats })
+      })
+      .catch((err) => {
+        throw err
+      })
   }
 }
 
@@ -188,16 +189,21 @@ export function setOffline(userId) {
   }
 }
 
-export function paginateMessages (data) {
+export function paginateMessages(chatId, page) {
   return (dispatch, getState) => {
-    chatService
-    .paginateMessages(data)
-    .then((data) => {
-      console.log(data)
+    chatService.paginateMessages(chatId, page).then((data) => {
+      const { messages, pagination } = data
       const { actualChat } = getState().chat
-      const newChat = actualChat
+      if (messages?.length) {
+        messages.reverse()
+      }
+      const chatCopy = {
+        ...actualChat,
+        pagination,
+        messages: [...messages, ...actualChat.messages],
+      }
 
-      dispatch({ type: PAGINATED_MESSAGES, messages, actualChat: newChat})
+      dispatch({ type: PAGINATED_MESSAGES, actualChat: chatCopy })
     })
   }
 }

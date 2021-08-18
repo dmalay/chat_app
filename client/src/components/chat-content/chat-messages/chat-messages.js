@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useRef } from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 
 import MessageForm from "./message-form"
 import localtimeConverter from "../../../helpers/localtimeConverter"
 import PopupForDirect from "../../modals/popup-DM"
 import { findActivePvtChats, findActivePvtDMs } from "../../../helpers/helpers"
+import { paginateMessages } from "../../../redux/actions/chat.actions"
 
 const ChatMessages = ({ actualChat, currentChat, user }) => {
-  const { messages } = actualChat
+  const dispatch = useDispatch()
+  const { messages, _id,  pagination } = actualChat
   const { scrollBottom, chats, online } = useSelector((s) => s.chat)
 
   const chatBox = useRef()
@@ -31,7 +33,8 @@ const ChatMessages = ({ actualChat, currentChat, user }) => {
   const handleInfiniteScroll = (e) => {
     if (e.target.scrollTop === 0) {
       setLoading(true)
-      
+      const page = pagination?.page ? pagination.page : 0
+      dispatch(paginateMessages(_id, parseInt(page) + 1))
     }
   }
 

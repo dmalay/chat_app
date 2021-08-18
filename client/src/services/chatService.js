@@ -62,7 +62,7 @@ const chatService = {
   },
 
   paginateMessages: (chatId, page) => {
-    return API.get('/messages', {
+    return API.get('/chats/messages', {
       params: { chatId, page }
     })
     .then(({ data }) => {

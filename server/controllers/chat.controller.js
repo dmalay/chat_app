@@ -1,6 +1,6 @@
 import User from "../models/user.model"
 import Chat from "../models/chat.model"
-import  { MessageModel } from "../models/message.model"
+import Message, { MessageModel } from "../models/message.model"
 
 export const fetchController = async (req, res) => {
   try {
@@ -8,9 +8,26 @@ export const fetchController = async (req, res) => {
 
     const chats = await Chat.find({}).populate("subscribers", ["login", "type"])
     const actualChat = await Chat.findById(user.defaultChatID)
-      .populate("messages")
+      .populate({
+        path: "messages",
+        options: { sort: { createdAt: -1 }, limit: 20, skip: 0 },
+      })
       .populate("subscribers", ["login", "type"])
 
+    // const msgNumber = await MessageModel.countDocuments({
+    //   chatID: actualChat._id,
+    // })
+    // const messages = await MessageModel.find({ chatID: actualChat._id }, null, {
+    //   sort: { createdAt: -1 },
+    //   limit: 5,
+    //   skip: 0,
+    // })
+    // const somedata = await Chat.findById(user.defaultChatID).populate({
+    //   path: "messages",
+    //   options: { sort: { createdAt: -1 }, limit: 10, skip: 0 },
+    // })
+
+    // console.log('somedata >>>>>>',messages)
     return res
       .status(200)
       .json({ message: "initial data fetched", chats, actualChat })
@@ -23,7 +40,10 @@ export const getController = async (req, res) => {
   try {
     const { chatId } = req.params
     const actualChat = await Chat.findById(chatId)
-      .populate("messages")
+      .populate({
+        path: "messages",
+        options: { sort: { createdAt: -1 }, limit: 20, skip: 0 },
+      })
       .populate("subscribers", ["login", "type"])
       .exec()
     return res.status(200).json({ message: "chat data fetched", actualChat })
@@ -103,11 +123,11 @@ export const deleteController = async (req, res) => {
 
     const user1 = await User.findById(user._id).lean()
     const hasMessages = await MessageModel.exists({ chatID: chatId })
-    if(hasMessages) {
-        await MessageModel.deleteMany({ chatID: chatId })
-      }
-      
-      await Chat.findByIdAndRemove(chatId)
+    if (hasMessages) {
+      await MessageModel.deleteMany({ chatID: chatId })
+    }
+
+    await Chat.findByIdAndRemove(chatId)
     console.log(`chat ${chat.title} deleted by user${user1.login}`)
     return res
       .status(200)
@@ -119,29 +139,28 @@ export const deleteController = async (req, res) => {
 
 export const messagesController = async (req, res) => {
   try {
-    const { chatId } = req.query
+    const { chatId, page } = req.query
     const limit = 20
-    const { page } = req.query || 1
-    const skip = page > 1 ? page * limit : 0
-
-    const msgNumber = await MessageModel.countDocuments({ chatID:actualChat._id })
-    const messages = await MessageModel.find( { chatID:actualChat._id}, null,  
-      { sort: { 'createdAt': -1 } , limit: limit,  skip: skip}  )
+    const skip = page >= 1 ? page * limit : 0
     
+    const msgNumber = await MessageModel.countDocuments({
+      chatID: chatId,
+    })
     const totalPages = Math.ceil(msgNumber / limit)
-
-    if(page > totalPages) {
-      return res.status(200).json({ message: "no paginated messages",  messages:[]})
+    const messages = await MessageModel.find({ chatID: chatId }, null, {
+      sort: { createdAt: -1 },
+      limit: limit,
+      skip: skip,
+    })
+    
+    if (page > totalPages) {
+      return res
+      .status(200)
+      .json({ message: "no paginated messages", messages: [] })
     }
-    const response = {
-      messages: messages,
-      pagination: {
-        page,
-        totalPages
-      }
-    }
-    return res.status(200).json({ message: "paginated messages", response })
+    const pagination = { page, totalPages }
 
+    return res.status(200).json({ message: "paginated messages", messages, pagination })
   } catch (e) {
     return res.status(500).json({ error: e.message })
   }
