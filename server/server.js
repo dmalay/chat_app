@@ -8,8 +8,6 @@ import router from './router'
 import mongooseService from './services/mongoose'
 import jwtStrategy from './services/passport'
 
-import Chat from './models/chat.model'
-import User from './models/user.model'
 import SocketIO from './socket'
 
 const app = express()

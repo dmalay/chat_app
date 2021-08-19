@@ -24,7 +24,7 @@ const Modal = (props) => {
       onClick={closeModal}
     >
       <div className="modal-close w-1/6 h-screen"></div>
-      <div className="w-1/4 mt-16 h-3/4">
+      <div className="mt-16 h-96 w-72 ">
         <div className="m-2 w-full h-full border border-black bg-blue-500 flex flex-col justify-between">
           <div className="w-full bg-blue-800 font-light text-m flex items-center text-center justify-between border border-b-0">
             <span
@@ -48,8 +48,8 @@ const Modal = (props) => {
               create new
             </span>
           </div>
-          <div className="h-full px-4 pt-4 border-l border-r cursor-default">
-            <div className=" h-full w-full bg-purple-900 border-r border-b overflow-y-auto flex flex-col">
+          <div className="flex flex-1 px-4 pt-4 border-l border-r cursor-default">
+            <div className=" w-full bg-purple-900 border-r border-b overflow-y-auto flex flex-col">
               {!folder ? (
                 chats
                   .sort(

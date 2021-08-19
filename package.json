@@ -2,6 +2,10 @@
   "name": "chat_app",
   "version": "0.1.0",
   "license": "MIT",
+  "author": "Dmitri Malay",
+  "engines": {
+    "node": "14.17.0"
+  },
   "scripts": {
     "client": "cd client && yarn start",
     "server": "nodemon start.js",
