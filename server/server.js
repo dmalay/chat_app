@@ -3,7 +3,6 @@ import cors from 'cors'
 import path from 'path'
 import http from 'http'
 import passport from 'passport'
-
 import router from './router'
 import mongooseService from './services/mongoose'
 import jwtStrategy from './services/passport'
@@ -27,11 +26,10 @@ passport.use('jwt', jwtStrategy)
 
 middleware.forEach((it) => app.use(it))
 
-
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client/build')))
+  app.use(express.static(path.resolve( 'client/build')))
   app.get('*', function(req, res) {
-    res.sendFile(join(__dirname, 'client/build', 'index.html'))
+    res.sendFile(path.resolve('client/build', 'index.html'))
   })
 }
 
@@ -41,5 +39,5 @@ SocketIO(server)
 
 server.listen(port, (error) => {
   if (error) throw error
-  console.log(`Server is running on http://localhost:${port}`)
+  console.log(`listening on port:${port}`)
 })

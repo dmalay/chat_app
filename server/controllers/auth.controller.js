@@ -57,7 +57,6 @@ export const tokenController = async (req, res) => {
 export const registerController = async (req, res) => {
   try {
     const { login, password } = req.body
-
     const { error } = registerValidation({ login, password })
     if (error) {
       return res.status(400).send(error.details[0].message)
