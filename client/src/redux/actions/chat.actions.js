@@ -1,4 +1,5 @@
 import chatService from "../../services/chatService"
+import socketService from "../../socket.io/socketService"
 
 import {
   FETCH_CHATS,
@@ -91,10 +92,12 @@ export function quitChat({ authID, _id }) {
 
 export function createChat({ name, title, type, idForDm, _id }) {
   return (dispatch, getState) => {
-    const { errors } = getState().chat
+    const { errors, socket } = getState().chat
     chatService
       .createChat({ name, title, type, idForDm, _id })
       .then((data) => {
+        console.log(data)
+        socketService.chatCreated(socket, {chatId: data.chatId, forUserId: idForDm})
         dispatch({ type: CREATE_CHAT, chats: data.chats })
         dispatch({
           type: SET_ERROR,
@@ -238,5 +241,20 @@ export function messageRead(chatId) {
       type: MESSAGE_READ,
       unreadMessages: { ...unreadMessages, ...{ [chatId]: false } },
     })
+  }
+}
+
+export function chatDeleted(chatId) {
+  return (dispatch, getState) => {
+      const { chats } = getState().chat
+      const newChats = chats.filter((chat) => chat._id !== chatId)
+      dispatch({ type: DELETE_PRIVATE_CHAT, chats: newChats })
+  }
+}
+
+export function chatCreated(chat) {
+  return (dispatch, getState) => {
+    const { chats } = getState().chat
+    dispatch({ type: CREATE_CHAT, chats: [...chats, ...[chat]] })
   }
 }

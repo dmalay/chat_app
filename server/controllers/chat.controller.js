@@ -1,6 +1,6 @@
 import User from "../models/user.model"
 import Chat from "../models/chat.model"
-import Message, { MessageModel } from "../models/message.model"
+import  { MessageModel } from "../models/message.model"
 
 export const fetchController = async (req, res) => {
   try {
@@ -13,21 +13,6 @@ export const fetchController = async (req, res) => {
         options: { sort: { createdAt: -1 }, limit: 20, skip: 0 },
       })
       .populate("subscribers", ["login", "type"])
-
-    // const msgNumber = await MessageModel.countDocuments({
-    //   chatID: actualChat._id,
-    // })
-    // const messages = await MessageModel.find({ chatID: actualChat._id }, null, {
-    //   sort: { createdAt: -1 },
-    //   limit: 5,
-    //   skip: 0,
-    // })
-    // const somedata = await Chat.findById(user.defaultChatID).populate({
-    //   path: "messages",
-    //   options: { sort: { createdAt: -1 }, limit: 10, skip: 0 },
-    // })
-
-    // console.log('somedata >>>>>>',messages)
     return res
       .status(200)
       .json({ message: "initial data fetched", chats, actualChat })
@@ -103,10 +88,11 @@ export const createController = async (req, res) => {
     }
     chat.subscribers.push(_id)
     await chat.save()
+    console.log(`chat ${chat.title} created by user ${_id}`)
     const chats = await Chat.find({})
       .populate("subscribers", ["login", "type"])
       .exec()
-    return res.status(200).json({ message: "new chat created", chats })
+    return res.status(200).json({ message: "new chat created", chats, chatId: chat._id })
   } catch (e) {
     return res.status(500).json({ error: e.message })
   }
@@ -141,8 +127,7 @@ export const messagesController = async (req, res) => {
   try {
     const { chatId, page } = req.query
     const limit = 20
-    const skip = page >= 1 ? page * limit : 0
-    
+    const skip = page >= 1 ? page * limit : 0 
     const msgNumber = await MessageModel.countDocuments({
       chatID: chatId,
     })
@@ -152,14 +137,12 @@ export const messagesController = async (req, res) => {
       limit: limit,
       skip: skip,
     })
-    
     if (page > totalPages) {
       return res
       .status(200)
       .json({ message: "no paginated messages", messages: [] })
     }
     const pagination = { page, totalPages }
-
     return res.status(200).json({ message: "paginated messages", messages, pagination, chatId })
   } catch (e) {
     return res.status(500).json({ error: e.message })

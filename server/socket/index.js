@@ -1,5 +1,7 @@
 import { Server } from "socket.io"
+import Chat from "../models/chat.model"
 import { MessageModel } from "../models/message.model"
+
 
 import onlineHandler from "./onlineHandler"
 
@@ -26,11 +28,35 @@ const SocketIO = (server) => {
           name: message.fromUser.login,
           chatID: message.chatID,
         }
-
         const newMessage = await MessageModel.create(msg)
-        console.log(newMessage)
         io.emit("received", newMessage)
       } catch (e) {
+        console.log(e)
+      }
+    })
+
+    socket.on('chatDeleted', async (data) => {
+      try{
+        const { privateChatId, forUserId } = data
+        const userSockets = onlineHandler.getAllSocketsByUserId(forUserId)
+        userSockets.forEach((sock) => {
+          io.to(sock).emit('chatDeleted', privateChatId )
+        })
+      } catch(e) {
+        console.log(e)
+      }
+    })
+
+    socket.on('chatCreated', async (data) => {
+      try{
+        const { chatId, forUserId } = data
+        const chat = await Chat.findById(chatId)
+        .populate("subscribers", ["login", "type"])
+        const userSockets = onlineHandler.getAllSocketsByUserId(forUserId)
+        userSockets.forEach((sock) => {
+          io.to(sock).emit('chatCreated', chat)
+        })
+      } catch(e) {
         console.log(e)
       }
     })
@@ -46,7 +72,7 @@ const SocketIO = (server) => {
     socket.on("logout", async (user) => {
       //user logged out and explicitly disconnected all sessions
       try {
-        //emit logout to every other user session
+        //emit logout to every other user sessions
         const userSockets = onlineHandler.getAllSocketsByUserId(user._id)
         userSockets.forEach((sock) => {
           if (sock === socket.id) {

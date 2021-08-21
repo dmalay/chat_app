@@ -1,10 +1,11 @@
 import React from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import {
   createChat,
   deleteChat,
   changeActualChat,
 } from "../../redux/actions/chat.actions"
+import socketService from "../../socket.io/socketService"
 
 const PopupForDirect = (props) => {
   const {
@@ -18,6 +19,7 @@ const PopupForDirect = (props) => {
     activePvtDMs
   } = props
 
+  const { socket } = useSelector((s) => s.chat)
   const privateChat = activePvtChats.filter((it) => it.subscribers[0]._id === userForDm._id || it.subscribers[1]._id === userForDm._id)
   const dispatch = useDispatch()
 
@@ -35,6 +37,7 @@ const PopupForDirect = (props) => {
 
   const deletePrivateChat = () => {
     dispatch(deleteChat(privateChat[0]._id))
+    socketService.chatDeleted(socket, {privateChatId: privateChat[0]._id, forUserId: userForDm._id})
 
   }
 

@@ -8,6 +8,8 @@ import {
   resetSocket,
   setOnline,
   setOffline,
+  chatDeleted,
+  chatCreated,
 } from "../redux/actions/chat.actions"
 import { logout } from "../redux/actions/auth.actions"
 
@@ -40,6 +42,14 @@ function useSocket(user, dispatch) {
 
       socket.on("offline", (userId) => {
         dispatch(setOffline(userId))
+      })
+
+      socket.on("chatDeleted", (chatId) => {
+        console.log("chatDeleted", chatId)
+        dispatch(chatDeleted(chatId))
+      })
+      socket.on("chatCreated", (chat) => {
+        dispatch(chatCreated(chat))
       })
 
       // console.log(res)
