@@ -51,7 +51,6 @@ export function changeActualChat(chatId) {
       .then((data) => {
         const { scrollBottom } = getState().chat
         const newScrollBottom = scrollBottom + 1
-        console.log(newScrollBottom)
         dispatch({
           type: CHANGE_ACTUAL_CHAT,
           actualChat: data.actualChat,
@@ -96,7 +95,6 @@ export function createChat({ name, title, type, idForDm, _id }) {
     chatService
       .createChat({ name, title, type, idForDm, _id })
       .then((data) => {
-        console.log(data)
         socketService.chatCreated(socket, {chatId: data.chatId, forUserId: idForDm})
         dispatch({ type: CREATE_CHAT, chats: data.chats })
         dispatch({
